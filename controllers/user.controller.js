@@ -298,7 +298,7 @@ const confirmPasswordReset = expressAsyncHandler(async (req, res, next) => {
     });
     await sendEmail(html, email, title);
     res.status(StatusCodes.OK).json({
-      message: "password rest successfully",
+      message: "password resett successfully",
       status: StatusCodes.OK,
       email: user.email,
     });
