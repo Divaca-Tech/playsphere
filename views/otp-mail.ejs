@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <style>
+    .mail-body {
+      max-width: 500px;
+      margin: 2rem auto;
+    }
+    .logo {
+      max-width: 60px;
+      width: 100%;
+    }
+    img {
+      width: 100%;
+    }
+  </style>
+  <body>
+    <div class="mail-body">
+      <div class="logo">
+        <img src="<%= logoUrl %>" alt="company-logo" />
+      </div>
+      <h2><%= title %></h2>
+      <p><%= message %></p>
+
+      <h4>OTP: <span><%= token %></span></h4>
+    </div>
+  </body>
+</html>
