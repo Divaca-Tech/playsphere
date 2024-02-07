@@ -317,15 +317,21 @@ const googAuth = expressAsyncHandler(async (req, res, next) => {
   }
 
   const { email, phoneNumber, name, accessToken, photoUrl } = req.body;
-  const signature = JWTToken(email, accessToken)
 
   // const decoded = jwtDecode.jwtDecode("token")
 
   try {
     const findUser = await DB.user.findOne({ where: { email: email } });
     if (findUser) {
-      throwError("User already exists", StatusCodes.BAD_REQUEST, true);
+      const token = JWTToken(email, findUser.id);
+      res.status(StatusCodes.OK).json({
+        message: "login successful",
+        status: StatusCodes.OK,
+        token,
+      });
+      return;
     }
+    
     const hashedPassword = await hashPassword(email);
 
     await DB.user.create({
@@ -336,10 +342,11 @@ const googAuth = expressAsyncHandler(async (req, res, next) => {
       photoUrl,
     });
 
+    const token = JWTToken(email, accessToken)
     res.status(StatusCodes.OK).json({
       message: "User registration is successful",
       status: StatusCodes.OK,
-      accessToken : signature
+      token
     });
 
   } catch (error) {
