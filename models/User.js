@@ -28,6 +28,12 @@ const User = (sequelize, DataTypes) => {
     otp_exp_time: {
       type: DataTypes.STRING,
     },
+    photoUrl: {
+      type: DataTypes.STRING,
+    },
+    phoneNumber: {
+      type: DataTypes.STRING,
+    },
   });
 
   return User;

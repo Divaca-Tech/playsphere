@@ -6,6 +6,8 @@ const expressAsyncHandler = require("express-async-handler");
 const fse = require("fs-extra");
 const path = require("path");
 const ejs = require("ejs");
+const jwt = require("jsonwebtoken")
+const jwtDecode = require("jwt-decode")
 const {
   throwError,
   hashPassword,
@@ -251,6 +253,7 @@ const resetPassword = expressAsyncHandler(async (req, res, next) => {
     next(error);
   }
 });
+
 const confirmPasswordReset = expressAsyncHandler(async (req, res, next) => {
   const errors = validationResult(req);
 
@@ -307,6 +310,50 @@ const confirmPasswordReset = expressAsyncHandler(async (req, res, next) => {
   }
 });
 
+const googleAuth = expressAsyncHandler(async (req, res, next) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    throwError("Validation failed", StatusCodes.BAD_REQUEST, true);
+  }
+
+  const { email, phoneNumber, name, accessToken, photoUrl } = req.body;
+
+  // const decoded = jwtDecode.jwtDecode("token")
+
+  try {
+    const findUser = await DB.user.findOne({ where: { email: email } });
+    if (findUser) {
+      const token = JWTToken(email, findUser.id);
+      res.status(StatusCodes.OK).json({
+        message: "login successful",
+        status: StatusCodes.OK,
+        token,
+      });
+      return;
+    }
+
+    const hashedPassword = await hashPassword(email);
+
+    await DB.user.create({
+      email,
+      password: hashedPassword,
+      name,
+      phoneNumber,
+      photoUrl,
+    });
+
+    const token = JWTToken(email, accessToken)
+    res.status(StatusCodes.OK).json({
+      message: "User registration is successful",
+      status: StatusCodes.OK,
+      token
+    });
+
+  } catch (error) {
+    next(error);
+  }
+});
+
 module.exports = {
   createUser,
   confirmOTP,
@@ -314,4 +361,5 @@ module.exports = {
   login,
   resetPassword,
   confirmPasswordReset,
+  googleAuth,
 };
