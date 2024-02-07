@@ -55,7 +55,7 @@ app.use("/api/v1", router);
 app.use(errorHandler);
 
 
-// const hostname = os.hostname();
+const hostname = os.hostname();
 
 app.listen(process.env.PORT, () => {
   console.log("listening on port 3000");
