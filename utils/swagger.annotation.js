@@ -1,9 +1,7 @@
 const swaggerDefinitions = {
     '/user/register': {
-      __swagger__: {
-        tags: ['Users'], 
-      },
       post: {
+        tags: ['Auth'],
         summary: 'Create a new user',
         description: 'Create a new user.',
         requestBody: {
@@ -33,10 +31,8 @@ const swaggerDefinitions = {
     },
 
     '/user/signin': {
-        __swagger__: {
-          tags: ['Users'], 
-        },
         post: {
+          tags: ['Auth'], 
           summary: 'Login user',
           description: 'Login user.',
           requestBody: {
@@ -64,10 +60,8 @@ const swaggerDefinitions = {
     },
 
     '/user/request-otp': {
-        __swagger__: {
-          tags: ['Users'], 
-        },
         post: {
+          tags: ['Auth'], 
           summary: 'Request OTP',
           description: 'request otp',
           requestBody: {
@@ -94,10 +88,8 @@ const swaggerDefinitions = {
     },
 
     '/user/confirm-otp': {
-        __swagger__: {
-          tags: ['Users'], 
-        },
         post: {
+          tags: ['Auth'], 
           summary: 'Confirm OTP',
           description: 'confirm otp',
           requestBody: {
@@ -125,10 +117,8 @@ const swaggerDefinitions = {
     },
 
     '/user/request-password-reset': {
-        __swagger__: {
-          tags: ['Users'], 
-        },
         patch: {
+          tags: ['Auth'], 
           summary: 'Request password reset',
           description: 'request password reset',
           requestBody: {
@@ -155,10 +145,8 @@ const swaggerDefinitions = {
     },
     
     '/user/confirm-password-reset': {
-        __swagger__: {
-          tags: ['Users'], 
-        },
         post: {
+          tags: ['Auth'], 
           summary: 'Confirm request password',
           description: 'confirm request password',
           requestBody: {
@@ -187,10 +175,8 @@ const swaggerDefinitions = {
     },
 
     '/user/google-auth': {
-        __swagger__: {
-          tags: ['Users'], 
-        },
         post: {
+          tags: ['Auth'], 
           summary: 'Google Auth',
           description: 'This endpoint create a new user, if user exist already, it login the user',
           requestBody: {

@@ -18,6 +18,9 @@ module.exports = (app) => {
             },
             ],
             paths: swaggerAnnotation,
+            tags: [
+                { name: 'Auth', description: 'Endpoints related to user authentication' }
+            ]
         },
         apis: ['index.js'],
     };
