@@ -6,6 +6,7 @@ const {
   login,
   resetPassword,
   confirmPasswordReset,
+  googAuth,
 } = require("../controllers/user.controller");
 const { check } = require("express-validator");
 
@@ -51,6 +52,7 @@ userRouters.post(
   ],
   login
 );
+
 userRouters.patch(
   "/request-password-reset",
   [check("email", "Please include a valid email").isEmail().not().isEmpty()],
@@ -69,4 +71,16 @@ userRouters.post(
   ],
   confirmPasswordReset
 );
+
+userRouters.post(
+  "/google-auth",
+  [
+    check("email", "Please include a valid email").isEmail().not().isEmpty(),
+    check("name", "Please enter your name").not().isEmpty(),
+    check("accessToken", "Please include access token").not().isEmpty()
+  ],
+  googAuth
+);
+
+
 module.exports = userRouters;
