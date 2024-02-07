@@ -11,9 +11,13 @@ dotenv.config();
 const DB = require("./models");
 const fse = require("fs-extra");
 const router = require("./routes/routes");
+const swaggerDocs = require("./utils/swagger.docs")
 // const userRouters = require("./routes/user.auth.route")
 // const routers = require("./routes/user.auth.route");
 const app = express();
+const os = require('os');
+
+swaggerDocs(app)
 
 app.use(
   cors({
@@ -49,6 +53,9 @@ app.set("views", path.join(__dirname, "./views"));
 app.use("/api/v1", router);
 
 app.use(errorHandler);
+
+
+const hostname = os.hostname();
 
 app.listen(process.env.PORT, () => {
   console.log("listening on port 3000");
