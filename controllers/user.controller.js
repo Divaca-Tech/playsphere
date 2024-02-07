@@ -310,7 +310,7 @@ const confirmPasswordReset = expressAsyncHandler(async (req, res, next) => {
   }
 });
 
-const googAuth = expressAsyncHandler(async (req, res, next) => {
+const googleAuth = expressAsyncHandler(async (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     throwError("Validation failed", StatusCodes.BAD_REQUEST, true);
@@ -331,7 +331,7 @@ const googAuth = expressAsyncHandler(async (req, res, next) => {
       });
       return;
     }
-    
+
     const hashedPassword = await hashPassword(email);
 
     await DB.user.create({
@@ -361,5 +361,5 @@ module.exports = {
   login,
   resetPassword,
   confirmPasswordReset,
-  googAuth,
+  googleAuth,
 };

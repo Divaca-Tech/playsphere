@@ -6,7 +6,7 @@ const {
   login,
   resetPassword,
   confirmPasswordReset,
-  googAuth,
+  googleAuth,
 } = require("../controllers/user.controller");
 const { check } = require("express-validator");
 
@@ -79,7 +79,7 @@ userRouters.post(
     check("name", "Please enter your name").not().isEmpty(),
     check("accessToken", "Please include access token").not().isEmpty()
   ],
-  googAuth
+  googleAuth
 );
 
 
