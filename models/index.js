@@ -2,6 +2,13 @@ const { Sequelize, DataTypes } = require("sequelize");
 const format = require("format");
 const config = require("../config/config");
 const UserModel = require("./User");
+const PostModel = require("./Post");
+const PostAttachmentModel = require("./PostAttachment");
+const CommentModel = require("./Comment");
+const LikeModel = require("./Like");
+const ReplyModel = require("./Reply");
+const { setUpAssociations } = require("./associations");
+// const { setUpAssociations } = require("./associations");
 
 const sequelize = new Sequelize(
   config.DB_NAME,
@@ -9,9 +16,86 @@ const sequelize = new Sequelize(
   config.DB_PASSWORD,
   {
     host: config.DB_HOST,
-    dialect: "mysql",
+    dialect: config.DB_DIALECT,
   }
 );
+const DB = {};
+
+DB.sequelize = sequelize;
+DB.Sequelize = Sequelize;
+DB.user = UserModel(sequelize, DataTypes);
+DB.post = PostModel(sequelize, DataTypes);
+DB.postAttachment = PostAttachmentModel(sequelize, DataTypes);
+DB.comment = CommentModel(sequelize, DataTypes);
+DB.like = LikeModel(sequelize, DataTypes);
+DB.reply = ReplyModel(sequelize, DataTypes);
+
+DB.user.hasMany(DB.post, {
+  foreignKey: "userId",
+});
+DB.post.belongsTo(DB.user, {
+  foreignKey: { name: "userId", allowNull: false },
+});
+DB.post.hasMany(DB.postAttachment, {
+  foreignKey: "postId",
+});
+DB.postAttachment.belongsTo(DB.post, {
+  foreignKey: { name: "postId", allowNull: false },
+});
+DB.post.hasMany(DB.comment, {
+  foreignKey: "postId",
+});
+DB.comment.belongsTo(DB.post, {
+  foreignKey: { name: "postId", allowNull: false },
+});
+DB.post.hasMany(DB.like, {
+  foreignKey: "postId",
+});
+DB.like.belongsTo(DB.post, {
+  foreignKey: { name: "postId", allowNull: false },
+});
+DB.post.hasMany(DB.reply, {
+  foreignKey: "postId",
+});
+DB.reply.belongsTo(DB.post, {
+  foreignKey: { name: "postId", allowNull: false },
+});
+DB.comment.hasMany(DB.like, {
+  foreignKey: "commentId",
+});
+DB.like.belongsTo(DB.comment, {
+  foreignKey: { name: "commentId", allowNull: false },
+});
+DB.comment.hasMany(DB.reply, {
+  foreignKey: "commentId",
+});
+DB.reply.belongsTo(DB.comment, {
+  foreignKey: { name: "commentId", allowNull: false },
+});
+DB.reply.hasMany(DB.like, {
+  foreignKey: "replyId",
+});
+DB.like.belongsTo(DB.reply, {
+  foreignKey: { name: "replyId", allowNull: false },
+});
+DB.user.hasMany(DB.comment, {
+  foreignKey: "userId",
+});
+DB.comment.belongsTo(DB.user, {
+  foreignKey: { name: "userId", allowNull: false },
+});
+DB.user.hasMany(DB.like, {
+  foreignKey: "userId",
+});
+DB.like.belongsTo(DB.user, {
+  foreignKey: { name: "userId", allowNull: false },
+});
+DB.user.hasMany(DB.reply, {
+  foreignKey: "userId",
+});
+DB.reply.belongsTo(DB.user, {
+  foreignKey: { name: "userId", allowNull: false },
+});
 
 sequelize
   .sync({ force: false })
@@ -22,9 +106,6 @@ sequelize
 
     // Add Missing Columns
     for (let model in DB) {
-      // if (model === "DebtorsCat") {
-      //   continue;
-      // }
       if (DB[model]?.rawAttributes) {
         models.push(model);
       }
@@ -94,6 +175,7 @@ sequelize
       )
       .then(() => {
         console.log("Columns Synced");
+        // setUpAssociations();
       })
       .catch((err) => {
         console.log(err);
@@ -101,19 +183,14 @@ sequelize
   })
   .catch((err) => console.log(err));
 
-const DB = {};
-
-DB.sequelize = sequelize;
-DB.Sequelize = Sequelize;
-DB.user = UserModel(sequelize, DataTypes);
-
-DB.sequelize
-  .sync({ force: false })
-  .then(() => {
-    console.log("DB synchronized.");
-  })
-  .catch((error) => {
-    console.error("Unable to  sync database:", error);
-  });
+// DB.sequelize
+//   .sync({ force: false })
+//   .then(async () => {
+//     // await setUpAssociations();
+//     console.log("DB synchronized.");
+//   })
+//   .catch((error) => {
+//     console.error("Unable to  sync database:", error);
+//   });
 
 module.exports = DB;

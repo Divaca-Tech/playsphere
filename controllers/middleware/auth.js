@@ -1,6 +1,7 @@
 const { StatusCodes } = require("http-status-codes");
-import Jwt from "jsonwebtoken";
-import { throwError } from "../../utils/helpers";
+const Jwt = require("jsonwebtoken");
+const { throwError } = require("../../utils/helpers");
+const config = require("../../config/config");
 
 module.exports = async (req, res, next) => {
   try {
@@ -10,7 +11,7 @@ module.exports = async (req, res, next) => {
     }
     let decode;
     const token = authHeader?.split(" ")[1];
-    decode = Jwt.verify(token, `${process.env.JWT_SECRET_KEY}`);
+    decode = Jwt.verify(token, `${config.JWT_SECRET}`);
     if (!token || !decode) {
       throwError("Invalid token");
     }
