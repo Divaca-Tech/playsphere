@@ -27,7 +27,7 @@ const JWTToken = (email, authId) => {
       email,
       authId,
     },
-    `${process.env.JWT_SECRET}`,
+    `${config.JWT_SECRET}`,
     {
       expiresIn: "30d",
     }
@@ -58,12 +58,12 @@ const sendEmail = async function (content, to, subject) {
 
   try {
     const transport = createTransport({
-      host: "mail.privateemail.com", // Example: 'smtp.yourprovider.com'
+      host: config.HOST, // Example: 'smtp.yourprovider.com'
       port: 465,
       secure: true,
       auth: {
-        user: process.env.EMAIL,
-        pass: process.env.MAIL_PASSWORD,
+        user: config.EMAIL,
+        pass: config.MAIL_PASSWORD,
       },
       tls: {
         // do not fail on invalid certs
@@ -93,7 +93,6 @@ async function reqTwoFactorAuth() {
 }
 
 async function verifyTwoFactorAuth(token, secret) {
-  console.log("============== ", token, secret);
   const isValid = Speakeasy.totp.verify({
     secret: secret,
     encoding: "base32",
@@ -101,7 +100,6 @@ async function verifyTwoFactorAuth(token, secret) {
     step: 240,
   });
 
-  console.log("=========", isValid);
   return isValid;
 }
 

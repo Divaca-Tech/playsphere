@@ -1,5 +1,5 @@
 const User = (sequelize, DataTypes) => {
-  const User = sequelize.define("user", {
+  const User = sequelize.define("User", {
     id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
@@ -35,6 +35,24 @@ const User = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
     },
   });
+
+  // User.associate = (models) => {
+  //   User.hasMany(models.post, {
+  //     foreignKey: "userId",
+  //   });
+  //   User.hasMany(models.comment, {
+  //     foreignKey: "userId",
+  //   });
+  //   User.hasMany(models.like, {
+  //     foreignKey: "userId",
+  //   });
+  //   User.hasMany(models.reply, {
+  //     foreignKey: "userId",
+  //   });
+  //   User.hasMany(models.postAttachment, {
+  //     foreignKey: "userId",
+  //   });
+  // };
 
   return User;
 };
