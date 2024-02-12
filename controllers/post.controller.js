@@ -1,22 +1,15 @@
-const { validationResult } = require("express-validator");
 const { StatusCodes } = require("http-status-codes");
 const expressAsyncHandler = require("express-async-handler");
-const fse = require("fs-extra");
-const path = require("path");
-const ejs = require("ejs");
-const jwt = require("jsonwebtoken")
-const jwtDecode = require("jwt-decode")
-const {
-    throwError,
-} = require("../utils/helpers");
 const DB = require("../models/index");
 const cloudinary = require('cloudinary').v2;
 const formidable = require('formidable');
+const dotenv = require("dotenv");
+dotenv.config({ path: "./.env" });
 
 cloudinary.config({
-  cloud_name: 'dipxop2dr',
-  api_key: '628448886461797',
-  api_secret: 'yPv7TmoXdg-FLYIYknXBssYwFwc'
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET
 });
 
 const uploadFiles = expressAsyncHandler(async (req, res, next) => {

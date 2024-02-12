@@ -1,7 +1,7 @@
 const express = require("express");
 const {
    uploadFiles,
-} = require("../controllers/post.attachment.controller");
+} = require("../controllers/post.controller");
 const { check } = require("express-validator");
 
 const postRouters = express.Router();
