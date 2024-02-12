@@ -24,7 +24,11 @@ const uploadFiles = expressAsyncHandler(async (req, res, next) => {
         form.multiples = true;
 
         form.parse(req, (err, fields, files) => {
-            Object.entries(files).length == 0 ? res.status(StatusCodes.BAD_REQUEST).json({"message" : "Please select a file"}) : null;
+            if(Object.entries(files).length == 0){
+                res.status(StatusCodes.BAD_REQUEST).json({"message" : "Please select a file"})
+                return
+            }
+            
             err ? res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({err}) : null;
 
             for (let i = 0; i < Object.entries(files.file).length; i++) {
