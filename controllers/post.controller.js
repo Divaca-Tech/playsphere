@@ -13,6 +13,11 @@ cloudinary.config({
 });
 
 const uploadFiles = expressAsyncHandler(async (req, res, next) => {
+    
+    const isMultipart = req.is('multipart/form-data');
+    if(!isMultipart){
+        res.status(StatusCodes.BAD_REQUEST).json({message: "Form must be of type 'multipart/form-data'. "})
+    }
  
     try {
         const form = new formidable.IncomingForm();
@@ -33,7 +38,7 @@ const uploadFiles = expressAsyncHandler(async (req, res, next) => {
 
                         if(i < Object.entries(files).length){
                             // return "File is uploaded successfully";
-                            res.status(StatusCodes.OK).json({message: "File is uploaded successfully"})
+                            res.status(StatusCodes.OK).json({message: "File was uploaded successfully"})
                         }
                     }
                 });

@@ -258,6 +258,41 @@ const swaggerDefinitions = {
           }
         }
     },
+
+    '/post/upload-file': {
+      post: {
+        tags: ['Post'], 
+        summary: 'File Upload',
+        description: `|
+          This endpoint allows you to upload files to the cloud, it can be a single or multiple files. |
+          
+          - file: The File for post, can be a List of files. This field is required.
+
+          Note: Form must be of type 'multipart/form-data'.
+          
+          Upon successful uploads, the endpoint returns a response with status code 200 (OK).`,
+        requestBody: {
+          description: 'Password object',
+          required: true,
+          content: {
+            'application/json': {
+              schema: {
+                type: 'object',
+                properties: {
+                  file: { type: "image" },
+                },
+                required: ['file'] 
+              }
+            }
+          }
+        },
+        responses: {
+          '200': {
+            description: 'File was uploaded successfully'
+          }
+        }
+      }
+  },
     
 
 };
