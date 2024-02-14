@@ -1,13 +1,14 @@
 // const DB = require("../db");
 
+const { uploadMultipleFiles } = require("../utils/helpers");
 const { validationResult } = require("express-validator");
 const { StatusCodes } = require("http-status-codes");
 const expressAsyncHandler = require("express-async-handler");
 const fse = require("fs-extra");
 const path = require("path");
 const ejs = require("ejs");
-const jwt = require("jsonwebtoken")
-const jwtDecode = require("jwt-decode")
+const jwt = require("jsonwebtoken");
+const jwtDecode = require("jwt-decode");
 const {
   throwError,
   hashPassword,
@@ -342,13 +343,12 @@ const googleAuth = expressAsyncHandler(async (req, res, next) => {
       photoUrl,
     });
 
-    const token = JWTToken(email, accessToken)
+    const token = JWTToken(email, accessToken);
     res.status(StatusCodes.OK).json({
       message: "User registration is successful",
       status: StatusCodes.OK,
-      token
+      token,
     });
-
   } catch (error) {
     next(error);
   }

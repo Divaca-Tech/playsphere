@@ -8,6 +8,10 @@ const Comment = (sequelize, DataTypes) => {
     content: {
       type: DataTypes.TEXT,
     },
+    fileUrl: {
+      type: DataTypes.TEXT,
+      allowNull: true,
+    },
   });
 
   //   Comment.associate = (models) => {
