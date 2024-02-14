@@ -21,12 +21,6 @@ const app = express();
 const os = require("os");
 const config = require("./config/config");
 
-cloudinary.config({
-  cloud_name: config.CLOUDINARY_CLOUD_NAME,
-  api_key: config.CLOUDINARY_API_KEY,
-  api_secret: config.CLOUDINARY_API_SECRET,
-});
-
 swaggerDocs(app);
 
 app.use(
@@ -60,7 +54,7 @@ app.set("views", path.join(__dirname, "./views"));
 // });
 
 // this is where the router will come in
-app.use(formidableMiddleware());
+// app.use(formidableMiddleware());
 
 app.use("/api/v1", router);
 

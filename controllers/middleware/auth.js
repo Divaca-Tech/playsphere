@@ -3,7 +3,7 @@ const Jwt = require("jsonwebtoken");
 const { throwError } = require("../../utils/helpers");
 const config = require("../../config/config");
 
-module.exports = async (req, res, next) => {
+const auth = async (req, res, next) => {
   try {
     const authHeader = req.get("Authorization");
     if (!authHeader) {
@@ -22,3 +22,5 @@ module.exports = async (req, res, next) => {
     next(error);
   }
 };
+
+module.exports = { auth };

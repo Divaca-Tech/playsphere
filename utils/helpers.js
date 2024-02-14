@@ -112,7 +112,6 @@ async function verifyTwoFactorAuth(token, secret) {
 }
 
 async function detetectFileype(file) {
-  const filename = "example.jpg";
   const extension = path.extname(file); // Get the file extension
   return extension;
 }

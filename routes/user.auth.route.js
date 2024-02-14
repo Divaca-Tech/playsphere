@@ -11,6 +11,8 @@ const {
 } = require("../controllers/user.controller");
 const { check } = require("express-validator");
 const { postComment } = require("../controllers/comment.controller");
+const { auth } = require("../controllers/middleware/auth");
+const formidableMiddleware = require("express-formidable");
 
 const userRouters = express.Router();
 
@@ -83,6 +85,6 @@ userRouters.post(
   ],
   googleAuth
 );
-userRouters.post("/comment", postComment);
+userRouters.post("/comment", auth, formidableMiddleware(), postComment);
 
 module.exports = userRouters;

@@ -1,14 +1,10 @@
-const formidable = require("express-formidable");
 const expressAsyncHandler = require("express-async-handler");
-
 const DB = require("../models");
 const { StatusCodes } = require("http-status-codes");
 const { uploadMultipleFiles } = require("../utils/helpers");
-
 const postComment = expressAsyncHandler(async (req, res, next) => {
   const files = req.files;
 
-  console.log(req.files);
   const { postId, content } = req.fields;
 
   let currentAttachments = [];
@@ -37,8 +33,6 @@ const postComment = expressAsyncHandler(async (req, res, next) => {
       const data = upload.map((file) => file.url);
 
       const stringifyData = JSON.stringify(data);
-
-      console.log(stringifyData);
 
       const comment = await DB.comment.create({
         fileUrl: stringifyData,
