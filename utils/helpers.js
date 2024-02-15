@@ -5,6 +5,14 @@ const Speakeasy = require("speakeasy");
 const { StatusCodes } = require("http-status-codes");
 const path = require("path");
 const config = require("../config/config");
+const cloudinary = require("cloudinary").v2;
+const fs = require("fs");
+
+cloudinary.config({
+  cloud_name: config.CLOUDINARY_CLOUD_NAME,
+  api_key: config.CLOUDINARY_API_KEY,
+  api_secret: config.CLOUDINARY_API_SECRET,
+});
 
 const throwError = (errorMsg, statusCode, validationError) => {
   const error = new Error(errorMsg);
@@ -103,6 +111,108 @@ async function verifyTwoFactorAuth(token, secret) {
   return isValid;
 }
 
+async function detetectFileype(file) {
+  const extension = path.extname(file); // Get the file extension
+  return extension;
+}
+// async function uploadMultipleFiles(files) {
+//   try {
+//     const promises = files.map((file) => {
+//       return new Promise(async (resolve, reject) => {
+//         const fileType = await detetectFileype(file.filename);
+//         if (fileType === ".mp4") {
+//           const upload = await cloudinary.uploader.upload(file.path, {
+//             resource_type: "video",
+//             type: "upload",
+//           });
+//           resolve(upload);
+//         }
+
+//         if (
+//           fileType === ".png" ||
+//           fileType === ".jpg" ||
+//           fileType === ".jpeg"
+//         ) {
+//           const upload = await cloudinary.uploader.upload(file.path, {
+//             resource_type: "image",
+//             type: "upload",
+//           });
+//           resolve(upload);
+//         }
+//         if (
+//           fileType !== ".mp4" ||
+//           fileType !== ".png" ||
+//           fileType !== ".jpg" ||
+//           fileType !== ".jpeg"
+//         ) {
+//           const upload = await cloudinary.uploader.upload(file.path, {
+//             resource_type: "raw",
+//             type: "upload",
+//           });
+//           resolve(upload);
+//         }
+
+//         // cloudinary.uploader.upload(file.path, (error, result) => {
+//         //   if (error) reject(error);
+//         //   else resolve(result);
+//         // });
+//       });
+//     });
+
+//     const uploads = await Promise.all(promises);
+//     console.log("Uploads:", uploads);
+//     return uploads;
+//   } catch (error) {
+//     console.error("Error uploading files:", error);
+//     throw error;
+//   }
+// }
+async function uploadMultipleFiles(files) {
+  try {
+    const uploads = await Promise.all(
+      files.map(async (file) => {
+        try {
+          const fileType = await detetectFileype(file.filename);
+          if (fileType === ".mp4") {
+            const upload = await cloudinary.uploader.upload(file.path, {
+              resource_type: "video",
+              type: "upload",
+            });
+            return upload;
+          }
+
+          if (
+            fileType === ".png" ||
+            fileType === ".jpg" ||
+            fileType === ".jpeg"
+          ) {
+            const upload = await cloudinary.uploader.upload(file.path, {
+              resource_type: "image",
+              type: "upload",
+            });
+            return upload;
+          }
+
+          // Handle other cases here
+          const upload = await cloudinary.uploader.upload(file.path, {
+            resource_type: "raw",
+            type: "upload",
+          });
+          return upload;
+        } catch (error) {
+          console.error("Error processing file:", error);
+          throw error; // Propagate the error to the outer catch block
+        }
+      })
+    );
+    console.log("Uploads:", uploads);
+    return uploads;
+  } catch (error) {
+    console.error("Error uploading files:", error);
+    throw error;
+  }
+}
+
 module.exports = {
   throwError,
   salt,
@@ -113,4 +223,5 @@ module.exports = {
   reqTwoFactorAuth,
   verifyTwoFactorAuth,
   companyLogoUrl,
+  uploadMultipleFiles,
 };

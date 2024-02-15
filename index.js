@@ -11,13 +11,16 @@ dotenv.config();
 const DB = require("./models");
 const fse = require("fs-extra");
 const router = require("./routes/routes");
-const swaggerDocs = require("./utils/swagger.docs")
+const swaggerDocs = require("./utils/swagger.docs");
+const cloudinary = require("cloudinary").v2;
+
 // const userRouters = require("./routes/user.auth.route")
 // const routers = require("./routes/user.auth.route");
 const app = express();
-const os = require('os');
+const os = require("os");
+const config = require("./config/config");
 
-swaggerDocs(app)
+swaggerDocs(app);
 
 app.use(
   cors({
@@ -50,10 +53,11 @@ app.set("views", path.join(__dirname, "./views"));
 // });
 
 // this is where the router will come in
+// app.use(formidableMiddleware());
+
 app.use("/api/v1", router);
 
 app.use(errorHandler);
-
 
 const hostname = os.hostname();
 

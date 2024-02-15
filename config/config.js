@@ -11,4 +11,7 @@ module.exports = {
   MAIL_PASSWORD: process.env.MAIL_PASSWORD,
   EMAIL: process.env.EMAIL,
   HOST: process.env.HOST,
+  CLOUDINARY_CLOUD_NAME: process.env.CLOUDINARY_CLOUD_NAME,
+  CLOUDINARY_API_KEY: process.env.CLOUDINARY_API_KEY,
+  CLOUDINARY_API_SECRET: process.env.CLOUDINARY_API_SECRET,
 };

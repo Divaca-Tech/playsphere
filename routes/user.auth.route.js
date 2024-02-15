@@ -1,4 +1,5 @@
 const express = require("express");
+
 const {
   createUser,
   confirmOTP,
@@ -9,6 +10,9 @@ const {
   googleAuth,
 } = require("../controllers/user.controller");
 const { check } = require("express-validator");
+const { postComment } = require("../controllers/comment.controller");
+const { auth } = require("../controllers/middleware/auth");
+const formidableMiddleware = require("express-formidable");
 
 const userRouters = express.Router();
 
@@ -77,10 +81,10 @@ userRouters.post(
   [
     check("email", "Please include a valid email").isEmail().not().isEmpty(),
     check("name", "Please enter your name").not().isEmpty(),
-    check("accessToken", "Please include access token").not().isEmpty()
+    check("accessToken", "Please include access token").not().isEmpty(),
   ],
   googleAuth
 );
-
+userRouters.post("/comment", auth, formidableMiddleware(), postComment);
 
 module.exports = userRouters;
