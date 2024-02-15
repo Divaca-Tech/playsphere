@@ -13,7 +13,6 @@ const fse = require("fs-extra");
 const router = require("./routes/routes");
 const swaggerDocs = require("./utils/swagger.docs");
 const cloudinary = require("cloudinary").v2;
-const formidableMiddleware = require("express-formidable");
 
 // const userRouters = require("./routes/user.auth.route")
 // const routers = require("./routes/user.auth.route");

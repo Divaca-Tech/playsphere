@@ -3,6 +3,7 @@ const DB = require("../models");
 const { StatusCodes } = require("http-status-codes");
 const { uploadMultipleFiles } = require("../utils/helpers");
 const postComment = expressAsyncHandler(async (req, res, next) => {
+  const { authId } = req;
   const files = req.files;
 
   const { postId, content } = req.fields;
@@ -38,6 +39,7 @@ const postComment = expressAsyncHandler(async (req, res, next) => {
         fileUrl: stringifyData,
         content: content,
         postId: postId,
+        userId: authId,
       });
 
       res.status(StatusCodes.OK).json({
@@ -49,6 +51,7 @@ const postComment = expressAsyncHandler(async (req, res, next) => {
       const comment = await DB.comment.create({
         content: content,
         postId: postId,
+        userId: authId,
       });
 
       res.status(StatusCodes.OK).json({
