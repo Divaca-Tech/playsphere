@@ -20,7 +20,6 @@ postRouters.post(
 
 postRouters.get(
     "/",
-    check("userId", "Please provide associate userId").not().isEmpty(),
     GetUserPosts
 );
 

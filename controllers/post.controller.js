@@ -123,25 +123,35 @@ const GetUserPosts = expressAsyncHandler(async (req, res, next) => {
     const { userId } = req.body;
   
     try {
-        const user = await DB.user.findOne({
-            where: {
-                id : userId,
-            },
-        });
-
-        if(!user){
-            return res.status(StatusCodes.NOT_FOUND).json({
-                message: "User does not exist",
-                status: StatusCodes.NOT_FOUND,
+       if(userId){
+            const user = await DB.user.findOne({
+                where: {
+                    id : userId,
+                },
             });
-        }
-     
-        const post = await DB.post.findAll({
-            where: {
-                userId,
-            },
-        });
-  
+
+            if(!user){
+                return res.status(StatusCodes.NOT_FOUND).json({
+                    message: "User does not exist",
+                    status: StatusCodes.NOT_FOUND,
+                });
+            }
+        
+            const post = await DB.post.findAll({
+                where: {
+                    userId,
+                },
+            });
+    
+            return res.status(StatusCodes.OK).json({
+                message: "User post fetch successfully",
+                status: StatusCodes.OK,
+                post
+            });
+       }
+
+       const post = await DB.post.findAll();
+
         res.status(StatusCodes.OK).json({
             message: "User post fetch successfully",
             status: StatusCodes.OK,
@@ -304,7 +314,15 @@ const DeletePost = expressAsyncHandler(async (req, res, next) => {
             });
         }
 
-        post.destroy();
+        const postAttachment = await DB.postAttachment.findOne(
+        {
+            where: {
+                postId,
+            },
+        });
+
+        await post.destroy();
+        postAttachment ? await postAttachment.destroy() : null;
   
         res.status(StatusCodes.OK).json({
             message: "Post deleted successfully",
