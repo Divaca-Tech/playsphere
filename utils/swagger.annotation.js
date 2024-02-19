@@ -259,20 +259,55 @@ const swaggerDefinitions = {
         }
     },
 
-    '/post/upload-file': {
+    '/post': {
+      get: {
+        tags: ['Post'], 
+        summary: 'List of Post',
+        description: `|
+          This endpoint allows you to retrieve list of post, you can decided to send along side the userId and postId if you want to get a particular post, This endpoint will retrieve all the post if you didn't specify these field {userId, postId}. |
+          
+          - userId: The Id of the user post belongs to. This field is not required.
+          - postId: The Post Id, This field is not required.
+          
+          Upon successful, the endpoint returns a list of post.`,
+        requestBody: {
+          description: 'Post object',
+          required: true,
+          content: {
+            'application/json': {
+              schema: {
+                type: 'object',
+                properties: {
+                  userId: { type: "string" },
+                  postId: { type: "string" },
+                }
+              }
+            }
+          }
+        },
+        responses: {
+          '200': {
+            description: 'All Post was fetch successfully'
+          }
+        }
+      }
+    },
+
+    '/post/create': {
       post: {
         tags: ['Post'], 
-        summary: 'File Upload',
+        summary: 'Create Post',
         description: `|
-          This endpoint allows you to upload files to the cloud, it can be a single or multiple files. |
+          This endpoint allows you to Create a post, you can send along side the post attachment if it is included,  it can be a single or multiple files. |
           
-          - file: The File for post, can be a List of files. This field is required.
+          - file: The Post File Attachment, can be a List of files. This field is required.
+          - content: The Post content, string required.
 
           Note: Form must be of type 'multipart/form-data'.
           
           Upon successful uploads, the endpoint returns a response with status code 200 (OK).`,
         requestBody: {
-          description: 'Password object',
+          description: 'Post object',
           required: true,
           content: {
             'application/json': {
@@ -280,19 +315,126 @@ const swaggerDefinitions = {
                 type: 'object',
                 properties: {
                   file: { type: "image" },
+                  content: { type: "string" },
                 },
-                required: ['file'] 
+                required: ['content'] 
               }
             }
           }
         },
         responses: {
           '200': {
-            description: 'File was uploaded successfully'
+            description: 'Post was created successfully'
           }
         }
       }
-  },
+    },
+
+    '/post/update': {
+      put: {
+        tags: ['Post'], 
+        summary: 'Update Post',
+        description: `|
+          This endpoint allows you to update a post |
+          
+          - content: The Post content to be updated, This field is required.
+          - userId: The Id of the user post belongs to. This field is required.
+          - postId: The Post Id, This field is required.
+          
+          Upon successful, the endpoint returns 200.`,
+        requestBody: {
+          description: 'Post object',
+          required: true,
+          content: {
+            'application/json': {
+              schema: {
+                type: 'object',
+                properties: {
+                  content: { type: "string" },
+                  userId: { type: "string" },
+                  postId: { type: "string" },
+                }
+              }
+            }
+          }
+        },
+        responses: {
+          '200': {
+            description: 'Post was updated successfully'
+          }
+        }
+      }
+    },
+
+    '/post/delete': {
+      delete: {
+        tags: ['Post'], 
+        summary: 'Delete Post',
+        description: `|
+          This endpoint allows you to Delete a post |
+          
+          - userId: The Id of the user post belongs to. This field is required.
+          - postId: The Post Id, This field is required.
+          
+          Upon successful, the endpoint returns no content.`,
+        requestBody: {
+          description: 'Post object',
+          required: true,
+          content: {
+            'application/json': {
+              schema: {
+                type: 'object',
+                properties: {
+                  userId: { type: "string" },
+                  postId: { type: "string" },
+                }
+              }
+            }
+          }
+        },
+        responses: {
+          '200': {
+            description: 'Post was deleted successfully'
+          }
+        }
+      }
+    },
+
+    '/post/attachment': {
+      get: {
+        tags: ['Post'], 
+        summary: 'List of Post Attachment',
+        description: `|
+          This endpoint allows you to retrieve list of attachment, you can decided to send along side the userId and postId if you want to get a particular post attachment, This endpoint will retrieve all the post attachment if you didn't specify these field {userId, postId}. |
+          
+          - userId: The Id of the user post belongs to. This field is not required.
+          - postId: The Post Id, This field is not required.
+          
+          Upon successful, the endpoint returns a list of post attachment.`,
+        requestBody: {
+          description: 'Post object',
+          required: true,
+          content: {
+            'application/json': {
+              schema: {
+                type: 'object',
+                properties: {
+                  userId: { type: "string" },
+                  postId: { type: "string" },
+                }
+              }
+            }
+          }
+        },
+        responses: {
+          '200': {
+            description: 'All Post Attachment was fetch successfully'
+          }
+        }
+      }
+    },
+
+
     
 
 };
