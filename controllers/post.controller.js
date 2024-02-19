@@ -121,9 +121,58 @@ const GetUserPosts = expressAsyncHandler(async (req, res, next) => {
     }
 });
 
+const UpdatePost = expressAsyncHandler(async (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      throwError("Validation failed", StatusCodes.BAD_REQUEST, true);
+    }
+  
+    const { userId, postId, content } = req.body;
+  
+    try {
+        const user = await DB.user.findOne({
+            where: {
+                id : userId,
+            },
+        });
+
+        if(!user){
+            return res.status(StatusCodes.OK).json({
+                message: "User does not exist",
+                status: StatusCodes.NOT_FOUND,
+            });
+        }
+     
+        const post = await DB.post.update(
+        { content },
+        {
+            where: {
+                id : postId,
+                userId
+            },
+        });
+
+        if(post == 0){
+           return  res.status(StatusCodes.OK).json({
+                message: "This user post does not exist",
+                status: StatusCodes.NOT_FOUND,
+            });
+        }
+  
+        res.status(StatusCodes.OK).json({
+            message: "Post updated successfully",
+            status: StatusCodes.OK,
+        });
+    } catch (error) {
+      next(error);
+    }
+});
+
+
 
 module.exports = {
     uploadFiles,
     createPost,
     GetUserPosts,
+    UpdatePost
 };

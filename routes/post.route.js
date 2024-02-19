@@ -1,6 +1,6 @@
 const express = require("express");
 const {
-   uploadFiles, createPost, GetUserPosts,
+   uploadFiles, createPost, GetUserPosts, UpdatePost,
 } = require("../controllers/post.controller");
 const { check } = require("express-validator");
 
@@ -12,16 +12,24 @@ postRouters.post(
 );
 
 postRouters.post(
-    "/create-post",
+    "/",
     check("content", "Please provide post content").not().isEmpty(),
     check("userId", "Please provide associate userId").not().isEmpty(),
     createPost
 );
 
 postRouters.get(
-    "/getpost",
+    "/",
     check("userId", "Please provide associate userId").not().isEmpty(),
     GetUserPosts
+);
+
+postRouters.put(
+    "/",
+    check("userId", "Please provide associate userId").not().isEmpty(),
+    check("content", "Please provide post content").not().isEmpty(),
+    check("postId", "Please provide  post id").not().isEmpty(),
+    UpdatePost
 );
 
 
