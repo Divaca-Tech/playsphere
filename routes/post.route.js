@@ -1,6 +1,6 @@
 const express = require("express");
 const {
-   uploadFiles, createPost, GetUserPosts, UpdatePost, DeletePost,
+   uploadFiles, createPost, GetUserPosts, UpdatePost, DeletePost, GetUserPostAttachment,
 } = require("../controllers/post.controller");
 const { check } = require("express-validator");
 
@@ -37,6 +37,11 @@ postRouters.delete(
     check("userId", "Please provide associate userId").not().isEmpty(),
     check("postId", "Please provide  post id").not().isEmpty(),
     DeletePost
+);
+
+postRouters.get(
+    "/attachment",
+    GetUserPostAttachment
 );
 
 module.exports = postRouters;

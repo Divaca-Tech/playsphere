@@ -153,6 +153,73 @@ const GetUserPosts = expressAsyncHandler(async (req, res, next) => {
     }
 });
 
+const GetUserPostAttachment = expressAsyncHandler(async (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      throwError("Validation failed", StatusCodes.BAD_REQUEST, true);
+    }
+  
+    const { userId, postId } = req.body;
+  
+    try {
+        if(userId){
+            const user = await DB.user.findOne({
+                where: {
+                    id : userId,
+                },
+            });
+    
+            if(!user){
+                return res.status(StatusCodes.NOT_FOUND).json({
+                    message: "User does not exist",
+                    status: StatusCodes.NOT_FOUND,
+                });
+            }
+    
+            const post = await DB.post.findOne(
+                {
+                    where: {
+                        id : postId,
+                        userId
+                    },
+            });
+    
+            if(!post){
+                return res.status(StatusCodes.OK).json({
+                    message: "Post does not exist",
+                    status: StatusCodes.NOT_FOUND,
+                });
+            }
+        }
+        
+        if(postId){
+            const postAttachment = await DB.postAttachment.findAll({
+                where: {
+                    postId
+                },
+            });
+
+           return res.status(StatusCodes.OK).json({
+                message: "postAttachment fetch successfully",
+                status: StatusCodes.OK,
+                postAttachment
+            });
+        }
+
+        
+        const postAttachment = await DB.postAttachment.findAll();
+  
+        res.status(StatusCodes.OK).json({
+            message: "postAttachment fetch successfully",
+            status: StatusCodes.OK,
+            postAttachment
+        });
+
+    } catch (error) {
+      next(error);
+    }
+});
+
 const UpdatePost = expressAsyncHandler(async (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -231,7 +298,7 @@ const DeletePost = expressAsyncHandler(async (req, res, next) => {
         });
 
         if(!post){
-            res.status(StatusCodes.OK).json({
+            return res.status(StatusCodes.OK).json({
                 message: "Post does not exist",
                 status: StatusCodes.NOT_FOUND,
             });
@@ -253,5 +320,6 @@ module.exports = {
     createPost,
     GetUserPosts,
     UpdatePost,
-    DeletePost
+    DeletePost,
+    GetUserPostAttachment,
 };
