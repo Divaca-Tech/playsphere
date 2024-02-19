@@ -142,11 +142,12 @@ const GetUserPosts = expressAsyncHandler(async (req, res, next) => {
             },
         });
   
-      res.status(StatusCodes.OK).json({
-        message: "User post fetch successfully",
-        status: StatusCodes.OK,
-        post
-      });
+        res.status(StatusCodes.OK).json({
+            message: "User post fetch successfully",
+            status: StatusCodes.OK,
+            post
+        });
+
     } catch (error) {
       next(error);
     }
