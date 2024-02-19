@@ -12,7 +12,7 @@ postRouters.post(
 );
 
 postRouters.post(
-    "/",
+    "/create",
     check("content", "Please provide post content").not().isEmpty(),
     check("userId", "Please provide associate userId").not().isEmpty(),
     createPost
@@ -24,7 +24,7 @@ postRouters.get(
 );
 
 postRouters.put(
-    "/",
+    "/update",
     check("userId", "Please provide associate userId").not().isEmpty(),
     check("content", "Please provide post content").not().isEmpty(),
     check("postId", "Please provide  post id").not().isEmpty(),
@@ -32,7 +32,7 @@ postRouters.put(
 );
 
 postRouters.delete(
-    "/",
+    "/delete",
     check("userId", "Please provide associate userId").not().isEmpty(),
     check("postId", "Please provide  post id").not().isEmpty(),
     DeletePost
