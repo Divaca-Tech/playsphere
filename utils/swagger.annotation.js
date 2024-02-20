@@ -1,9 +1,9 @@
 const swaggerDefinitions = {
-    '/user/register': {
-      post: {
-        tags: ['Auth'],
-        summary: 'Create a new user',
-        description: `|
+  "/user/register": {
+    post: {
+      tags: ["Auth"],
+      summary: "Create a new user",
+      description: `|
           This endpoint allows you to create a new user account.
           To create a user, you must provide the following information: |
           
@@ -12,37 +12,37 @@ const swaggerDefinitions = {
           - name: The name for the user account. This field is required.
           
           Upon successful creation, the endpoint returns a response with status code 201 (Created).`,
-        requestBody: {
-          description: 'User object',
-          required: true,
-          content: {
-            'application/json': {
-              schema: {
-                type: 'object',
-                properties: {
-                  name: { type: 'string' },
-                  email: { type: 'string' },
-                  password: { type: 'string' },
-                  phoneNumber: { type: 'string' },
-                },
-                required: ['name', 'email', 'password'] 
-              }
-            }
-          }
+      requestBody: {
+        description: "User object",
+        required: true,
+        content: {
+          "application/json": {
+            schema: {
+              type: "object",
+              properties: {
+                name: { type: "string" },
+                email: { type: "string" },
+                password: { type: "string" },
+                phoneNumber: { type: "string" },
+              },
+              required: ["name", "email", "password"],
+            },
+          },
         },
-        responses: {
-          '201': {
-            description: 'User created successfully'
-          }
-        }
-      }
+      },
+      responses: {
+        201: {
+          description: "User created successfully",
+        },
+      },
     },
+  },
 
-    '/user/signin': {
-        post: {
-          tags: ['Auth'], 
-          summary: 'Login user',
-          description: `| 
+  "/user/signin": {
+    post: {
+      tags: ["Auth"],
+      summary: "Login user",
+      description: `| 
             This endpoint allows users to log in to their accounts.
             To authenticate, users must provide their email and password. |
 
@@ -54,35 +54,35 @@ const swaggerDefinitions = {
             Note: The authentication token should be included in the headers of subsequent requests to authenticate the user.
 
               `,
-          requestBody: {
-            description: 'User object',
-            required: true,
-            content: {
-              'application/json': {
-                schema: {
-                  type: 'object',
-                  properties: {
-                    email: { type: 'string' },
-                    password: { type: 'string' },
-                  },
-                  required: ['email', 'password'] 
-                }
-              }
-            }
+      requestBody: {
+        description: "User object",
+        required: true,
+        content: {
+          "application/json": {
+            schema: {
+              type: "object",
+              properties: {
+                email: { type: "string" },
+                password: { type: "string" },
+              },
+              required: ["email", "password"],
+            },
           },
-          responses: {
-            '201': {
-              description: 'User Login successfully'
-            }
-          }
-        }
+        },
+      },
+      responses: {
+        201: {
+          description: "User Login successfully",
+        },
+      },
     },
+  },
 
-    '/user/request-otp': {
-        post: {
-          tags: ['Auth'], 
-          summary: 'Request OTP',
-          description: `| 
+  "/user/request-otp": {
+    post: {
+      tags: ["Auth"],
+      summary: "Request OTP",
+      description: `| 
             This endpoint allows users to request a one-time password (OTP) for authentication purposes.
             Users must provide their email address to receive the OTP.
             Upon successful request, the OTP is sent to the provided email address. |
@@ -91,34 +91,34 @@ const swaggerDefinitions = {
 
             Note: The OTP expires after a certain period and can only be used once for authentication.
           `,
-          requestBody: {
-            description: 'OTP object',
-            required: true,
-            content: {
-              'application/json': {
-                schema: {
-                  type: 'object',
-                  properties: {
-                    email: { type: 'string' },
-                  },
-                  required: ['email'] 
-                }
-              }
-            }
+      requestBody: {
+        description: "OTP object",
+        required: true,
+        content: {
+          "application/json": {
+            schema: {
+              type: "object",
+              properties: {
+                email: { type: "string" },
+              },
+              required: ["email"],
+            },
           },
-          responses: {
-            '200': {
-              description: 'OTP sent successfully'
-            }
-          }
-        }
+        },
+      },
+      responses: {
+        200: {
+          description: "OTP sent successfully",
+        },
+      },
     },
+  },
 
-    '/user/confirm-otp': {
-        post: {
-          tags: ['Auth'], 
-          summary: 'Confirm OTP',
-          description: `|
+  "/user/confirm-otp": {
+    post: {
+      tags: ["Auth"],
+      summary: "Confirm OTP",
+      description: `|
             This endpoint allows users to confirm the one-time password (OTP) they received for authentication purposes.
             Users must provide the OTP they received via email. |
     
@@ -126,103 +126,103 @@ const swaggerDefinitions = {
     
             Note: The OTP expires after a certain period and can only be used once for authentication.
           `,
-          requestBody: {
-            description: 'OTP object',
-            required: true,
-            content: {
-              'application/json': {
-                schema: {
-                  type: 'object',
-                  properties: {
-                    OTP: { type: 'string' },
-                    email: { type: 'string' },
-                  },
-                  required: ['email', 'OTP'] 
-                }
-              }
-            }
+      requestBody: {
+        description: "OTP object",
+        required: true,
+        content: {
+          "application/json": {
+            schema: {
+              type: "object",
+              properties: {
+                OTP: { type: "string" },
+                email: { type: "string" },
+              },
+              required: ["email", "OTP"],
+            },
           },
-          responses: {
-            '200': {
-              description: 'OTP confirmed successfully'
-            }
-          }
-        }
+        },
+      },
+      responses: {
+        200: {
+          description: "OTP confirmed successfully",
+        },
+      },
     },
+  },
 
-    '/user/request-password-reset': {
-        patch: {
-          tags: ['Auth'], 
-          summary: 'Request password reset',
-          description: `|
+  "/user/request-password-reset": {
+    patch: {
+      tags: ["Auth"],
+      summary: "Request password reset",
+      description: `|
             This endpoint allows users to request a password reset by providing their email address.
             Upon successful request, a password reset OTP will be sent to the provided email address. |
 
             Note: The password reset OTP is valid for a limited time period and can only be used once.
           `,
-          requestBody: {
-            description: 'Password object',
-            required: true,
-            content: {
-              'application/json': {
-                schema: {
-                  type: 'object',
-                  properties: {
-                    email: { type: 'string' },
-                  },
-                  required: ['email'] 
-                }
-              }
-            }
+      requestBody: {
+        description: "Password object",
+        required: true,
+        content: {
+          "application/json": {
+            schema: {
+              type: "object",
+              properties: {
+                email: { type: "string" },
+              },
+              required: ["email"],
+            },
           },
-          responses: {
-            '200': {
-              description: 'password reset pin sent'
-            }
-          }
-        }
+        },
+      },
+      responses: {
+        200: {
+          description: "password reset pin sent",
+        },
+      },
     },
-    
-    '/user/confirm-password-reset': {
-        post: {
-          tags: ['Auth'], 
-          summary: 'Confirm request password',
-          description: `| 
+  },
+
+  "/user/confirm-password-reset": {
+    post: {
+      tags: ["Auth"],
+      summary: "Confirm request password",
+      description: `| 
             This endpoint allows users to confirm a password reset request by providing a new password and a token received via email.
             Upon successful confirmation, the user's password will be updated to the new password. |
     
             Note: The password reset token expires after a certain period and can only be used once.
           `,
-          requestBody: {
-            description: 'Password object',
-            required: true,
-            content: {
-              'application/json': {
-                schema: {
-                  type: 'object',
-                  properties: {
-                    pin: { type: Number },
-                    email: { type: "string" },
-                    password: { type: "string" },
-                  },
-                  required: ['email', "pin", "password"] 
-                }
-              }
-            }
+      requestBody: {
+        description: "Password object",
+        required: true,
+        content: {
+          "application/json": {
+            schema: {
+              type: "object",
+              properties: {
+                pin: { type: Number },
+                email: { type: "string" },
+                password: { type: "string" },
+              },
+              required: ["email", "pin", "password"],
+            },
           },
-          responses: {
-            '200': {
-              description: 'Your password has been reset successfully'
-            }
-          }
-        }
+        },
+      },
+      responses: {
+        200: {
+          description: "Your password has been reset successfully",
+        },
+      },
     },
+  },
 
-    '/user/google-auth': {
-        post: {
-          tags: ['Auth'], 
-          summary: 'Google Auth',
-          description: `|
+  "/user/google-auth": {
+    post: {
+      tags: ["Auth"],
+      summary: "Google Auth",
+      description: `|
             This endpoint allows you to create a new user account with google authentication.
             To create a user, you must provide the following information: 
             if the email exist then the user is login. |
@@ -232,38 +232,38 @@ const swaggerDefinitions = {
             - accessToken: The access token from google. This field is required.
             
             Upon successful creation, the endpoint returns a response with status code 201 (Created).`,
-          requestBody: {
-            description: 'Password object',
-            required: true,
-            content: {
-              'application/json': {
-                schema: {
-                  type: 'object',
-                  properties: {
-                    email: { type: "string" },
-                    name: { type: "string" },
-                    accessToken: { type: "string" },
-                    phoneNumber: { type: "string" },
-                    photoUrl: { type: "string" },
-                  },
-                  required: ['email', "name", "accessToken"] 
-                }
-              }
-            }
+      requestBody: {
+        description: "Password object",
+        required: true,
+        content: {
+          "application/json": {
+            schema: {
+              type: "object",
+              properties: {
+                email: { type: "string" },
+                name: { type: "string" },
+                accessToken: { type: "string" },
+                phoneNumber: { type: "string" },
+                photoUrl: { type: "string" },
+              },
+              required: ["email", "name", "accessToken"],
+            },
           },
-          responses: {
-            '201': {
-              description: 'User created successfully'
-            }
-          }
-        }
+        },
+      },
+      responses: {
+        201: {
+          description: "User created successfully",
+        },
+      },
     },
+  },
 
-    '/post/upload-file': {
-      post: {
-        tags: ['Post'], 
-        summary: 'File Upload',
-        description: `|
+  "/post/upload-file": {
+    post: {
+      tags: ["Post"],
+      summary: "File Upload",
+      description: `|
           This endpoint allows you to upload files to the cloud, it can be a single or multiple files. |
           
           - file: The File for post, can be a List of files. This field is required.
@@ -271,30 +271,67 @@ const swaggerDefinitions = {
           Note: Form must be of type 'multipart/form-data'.
           
           Upon successful uploads, the endpoint returns a response with status code 200 (OK).`,
-        requestBody: {
-          description: 'Password object',
-          required: true,
-          content: {
-            'application/json': {
-              schema: {
-                type: 'object',
-                properties: {
-                  file: { type: "image" },
-                },
-                required: ['file'] 
-              }
-            }
-          }
+      requestBody: {
+        description: "Password object",
+        required: true,
+        content: {
+          "application/json": {
+            schema: {
+              type: "object",
+              properties: {
+                file: { type: "image" },
+              },
+              required: ["file"],
+            },
+          },
         },
-        responses: {
-          '200': {
-            description: 'File was uploaded successfully'
-          }
-        }
-      }
+      },
+      responses: {
+        200: {
+          description: "File was uploaded successfully",
+        },
+      },
+    },
   },
-    
+  "/user/comment": {
+    post: {
+      tags: ["Post"],
+      summary: "User comment and file upload",
+      description: `|
+          This endpoint allows you to comment on a post. | The user can attach a single or multiple files
+          
+           to the comment. The endpoint also allows a user to comment on a post without attaching  file with the comment.
 
+          Note: Form must be of type 'multipart/form-data'.
+          
+          Upon successful comment, the endpoint returns a response with status code 200 (OK).`,
+      requestBody: {
+        description: "Password object",
+        required: true,
+        content: {
+          "application/json": {
+            schema: {
+              type: "object",
+              properties: {
+                file: { type: "image/.mp4/mp3" },
+                content: "",
+                postId: "",
+              },
+              headers: {
+                Authorization: { bearer: "string" },
+              },
+              required: ["content", "postId"],
+            },
+          },
+        },
+      },
+      responses: {
+        200: {
+          description: "comment successful",
+        },
+      },
+    },
+  },
 };
-  
+
 module.exports = swaggerDefinitions;
