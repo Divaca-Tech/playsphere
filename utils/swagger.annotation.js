@@ -302,6 +302,7 @@ const swaggerDefinitions = {
           
           - file: The Post File Attachment, can be a List of files. This field is required.
           - content: The Post content, string required.
+          - userId: The user Id, string required.
 
           Note: Form must be of type 'multipart/form-data'.
           
@@ -316,6 +317,7 @@ const swaggerDefinitions = {
                 properties: {
                   file: { type: "image" },
                   content: { type: "string" },
+                  userId: { type: "string" },
                 },
                 required: ['content'] 
               }
