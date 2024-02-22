@@ -10,9 +10,15 @@ const {
   googleAuth,
 } = require("../controllers/user.controller");
 const { check } = require("express-validator");
-const { postComment } = require("../controllers/comment.controller");
+const {
+  postComment,
+  deleteComment,
+  updateCommentText,
+} = require("../controllers/comment.controller");
 const { auth } = require("../controllers/middleware/auth");
 const formidableMiddleware = require("express-formidable");
+const { likeOrUnlikeReply } = require("../controllers/like.controller");
+const { postCommentReply } = require("../controllers/Reply");
 
 const userRouters = express.Router();
 
@@ -85,6 +91,16 @@ userRouters.post(
   ],
   googleAuth
 );
+userRouters.post(
+  "/reply-comment",
+  auth,
+  formidableMiddleware(),
+  postCommentReply
+);
 userRouters.post("/comment", auth, formidableMiddleware(), postComment);
+userRouters.delete("/delete-comment/:commentId", auth, deleteComment);
+userRouters.patch("/update-comment", auth, updateCommentText);
+
+userRouters.post("/like-reply", auth, likeOrUnlikeReply);
 
 module.exports = userRouters;

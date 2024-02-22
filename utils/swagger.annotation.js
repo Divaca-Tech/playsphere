@@ -435,6 +435,168 @@ const swaggerDefinitions = {
       },
     },
   },
+  "/user/comment": {
+    post: {
+      tags: ["Post"],
+      summary: "Endpoint for adding comments to a post",
+      description: `|
+          This endpoint allows you to add comment to a post as well as attach images, video or any other file to the comment |      
+         This endpoint takes all the values in a form data (postId, content, file) are placed in form data. More than one and type of file can be attached to the form data
+          Upon successful, the endpoint returns the comment content and thelink to the file attached to it if there is any.`,
+      requestBody: {
+        description: "Post object",
+        required: true,
+        content: {
+          "application/json": {
+            schema: {
+              type: "object",
+              properties: {
+                postId: { type: "string" },
+                content: { type: "string" },
+                file: { type: "image/video/jpeg" },
+              },
+              headers: {
+                Authorization: "Bearer " + "token",
+              },
+            },
+          },
+        },
+      },
+      responses: {
+        200: {
+          description: "comment successfully",
+        },
+      },
+    },
+  },
+  "/user/delete-comment/:commentId": {
+    delete: {
+      tags: ["Delete"],
+      summary: "Endpoint fordeleting comment",
+      description: `|
+          This endpoint allows user to delete a specific comment. Comment can either be deleted by the post owner or by the person that wrote the comment only |`,
+      requestBody: {
+        description: "Post object",
+        required: true,
+        content: {
+          "application/json": {
+            schema: {
+              type: "object",
+              properties: {
+                commentId: { type: "integer" },
+              },
+              headers: {
+                Authorization: "Bearer " + "token",
+              },
+            },
+          },
+        },
+      },
+      responses: {
+        200: {
+          description: "Comment deleted successfully",
+        },
+      },
+    },
+  },
+  "/user/update-comment": {
+    patch: {
+      tags: ["patch"],
+      summary: "Endpoint for updating comment",
+      description: `|
+          This endpoint allows user to update a specific comment`,
+      requestBody: {
+        description: "Post object",
+        required: true,
+        content: {
+          "application/json": {
+            schema: {
+              type: "object",
+              properties: {
+                commentId: { type: "integer" },
+                content: { type: "string" },
+              },
+              headers: {
+                Authorization: "Bearer " + "token",
+              },
+            },
+          },
+        },
+      },
+      responses: {
+        200: {
+          description: "Comment deleted successfully",
+        },
+      },
+    },
+  },
+
+  "/user/reply-comment": {
+    post: {
+      tags: ["Post"],
+      summary: "Endpoint for replying a comment",
+      description: `|
+          This endpoint allows you to reply comment as attach images, video or any other file to the comment |
+                   the content, commentId and file are in form data. the file can be ignore or left empty and content can be add
+          Upon successful, the endpoint returns the reply content and the link to the file attached to it if there is any.`,
+      requestBody: {
+        description: "Post object",
+        required: true,
+        content: {
+          "application/json": {
+            schema: {
+              type: "object",
+              properties: {
+                commentId: { type: "integer" },
+                content: { type: "string" },
+                file: { type: "image/video/jpeg" },
+              },
+
+              headers: {
+                Authorization: "Bearer " + "token",
+              },
+            },
+          },
+        },
+      },
+      responses: {
+        200: {
+          description: "comment successfully",
+        },
+      },
+    },
+  },
+
+  "/user/like-reply": {
+    post: {
+      tags: ["post"],
+      summary: "Endpoint liking and unliking a reply to a comment",
+      description: `|
+          This endpoint allows user to like and unlike a specific reply`,
+      requestBody: {
+        description: "Post object",
+        required: true,
+        content: {
+          "application/json": {
+            schema: {
+              type: "object",
+              properties: {
+                replyId: { type: "integer" },
+              },
+              headers: {
+                Authorization: "Bearer " + "token",
+              },
+            },
+          },
+        },
+      },
+      responses: {
+        200: {
+          description: "Comment deleted successfully",
+        },
+      },
+    },
+  },
 };
 
 //           Note: Form must be of type 'multipart/form-data'.

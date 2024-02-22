@@ -17,6 +17,12 @@ const sequelize = new Sequelize(
   {
     host: config.DB_HOST,
     dialect: config.DB_DIALECT,
+    dialectOptions: {
+      ssl: {
+        require: true,
+        rejectUnauthorized: false, // This line is needed if you're getting self-signed certificate errors. Remove it in production.
+      },
+    },
   }
 );
 const DB = {};
@@ -34,67 +40,67 @@ DB.user.hasMany(DB.post, {
   foreignKey: "userId",
 });
 DB.post.belongsTo(DB.user, {
-  foreignKey: { name: "userId", allowNull: false },
+  foreignKey: { name: "userId", allowNull: true },
 });
 DB.post.hasMany(DB.postAttachment, {
   foreignKey: "postId",
 });
 DB.postAttachment.belongsTo(DB.post, {
-  foreignKey: { name: "postId", allowNull: false },
+  foreignKey: { name: "postId", allowNull: true },
 });
 DB.post.hasMany(DB.comment, {
   foreignKey: "postId",
 });
 DB.comment.belongsTo(DB.post, {
-  foreignKey: { name: "postId", allowNull: false },
+  foreignKey: { name: "postId", allowNull: true },
 });
 DB.post.hasMany(DB.like, {
   foreignKey: "postId",
 });
 DB.like.belongsTo(DB.post, {
-  foreignKey: { name: "postId", allowNull: false },
+  foreignKey: { name: "postId", allowNull: true },
 });
-DB.post.hasMany(DB.reply, {
-  foreignKey: "postId",
-});
-DB.reply.belongsTo(DB.post, {
-  foreignKey: { name: "postId", allowNull: false },
-});
+// DB.post.hasMany(DB.reply, {
+//   foreignKey: "postId",
+// });
+// DB.reply.belongsTo(DB.post, {
+//   foreignKey: { name: "postId", allowNull: true },
+// });
 DB.comment.hasMany(DB.like, {
   foreignKey: "commentId",
 });
 DB.like.belongsTo(DB.comment, {
-  foreignKey: { name: "commentId", allowNull: false },
+  foreignKey: { name: "commentId", allowNull: true },
 });
 DB.comment.hasMany(DB.reply, {
   foreignKey: "commentId",
 });
 DB.reply.belongsTo(DB.comment, {
-  foreignKey: { name: "commentId", allowNull: false },
+  foreignKey: { name: "commentId", allowNull: true },
 });
 DB.reply.hasMany(DB.like, {
   foreignKey: "replyId",
 });
 DB.like.belongsTo(DB.reply, {
-  foreignKey: { name: "replyId", allowNull: false },
+  foreignKey: { name: "replyId", allowNull: true },
 });
 DB.user.hasMany(DB.comment, {
   foreignKey: "userId",
 });
 DB.comment.belongsTo(DB.user, {
-  foreignKey: { name: "userId", allowNull: false },
+  foreignKey: { name: "userId", allowNull: true },
 });
 DB.user.hasMany(DB.like, {
   foreignKey: "userId",
 });
 DB.like.belongsTo(DB.user, {
-  foreignKey: { name: "userId", allowNull: false },
+  foreignKey: { name: "userId", allowNull: true },
 });
 DB.user.hasMany(DB.reply, {
   foreignKey: "userId",
 });
 DB.reply.belongsTo(DB.user, {
-  foreignKey: { name: "userId", allowNull: false },
+  foreignKey: { name: "userId", allowNull: true },
 });
 
 sequelize

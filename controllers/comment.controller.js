@@ -1,7 +1,9 @@
 const expressAsyncHandler = require("express-async-handler");
 const DB = require("../models");
 const { StatusCodes } = require("http-status-codes");
-const { uploadMultipleFiles } = require("../utils/helpers");
+const { uploadMultipleFiles, throwError } = require("../utils/helpers");
+const { validationResult } = require("express-validator");
+validationResult;
 const postComment = expressAsyncHandler(async (req, res, next) => {
   const { authId } = req;
   const files = req.files;
@@ -63,4 +65,77 @@ const postComment = expressAsyncHandler(async (req, res, next) => {
     next(error);
   }
 });
-module.exports = { postComment };
+
+const deleteComment = expressAsyncHandler(async (req, res, next) => {
+  try {
+    const { authId } = req;
+
+    const { commentId } = req.params;
+
+    const exactComment = await await DB.comment.findOne({
+      where: {
+        id: commentId,
+      },
+      include: DB.post,
+    });
+
+    if (
+      exactComment?.userId !== authId ||
+      exactComment?.post?.userId !== authId
+    ) {
+      throwError("Unauthorized access", StatusCodes.UNAUTHORIZED, true);
+    }
+
+    const comment = await DB.comment.destroy({
+      where: {
+        id: commentId,
+      },
+    });
+
+    if (comment) {
+      res.status(StatusCodes.OK).json({
+        message: "Comment deleted successfully",
+        status: StatusCodes.OK,
+      });
+    }
+  } catch (error) {
+    next(error);
+  }
+});
+const updateCommentText = expressAsyncHandler(async (req, res, next) => {
+  try {
+    const { authId } = req;
+    const { commentId, content } = req.body;
+    const exactComment = await await DB.comment.findOne({
+      where: {
+        id: commentId,
+      },
+      include: DB.post,
+    });
+    if (exactComment.userId !== authId) {
+      throwError("Unauthorized access", StatusCodes.UNAUTHORIZED, true);
+    }
+
+    const comment = await DB.comment.update(
+      {
+        content,
+      },
+      {
+        where: {
+          id: commentId,
+        },
+      }
+    );
+
+    if (comment) {
+      res.status(StatusCodes.OK).json({
+        message: " Comment updated successfully",
+        status: StatusCodes.OK,
+      });
+    }
+  } catch (error) {
+    next(error);
+  }
+});
+
+module.exports = { postComment, deleteComment, updateCommentText };

@@ -7,7 +7,9 @@ const Like = (sequelize, DataTypes) => {
     },
     isLiked: {
       type: DataTypes.BOOLEAN,
-      defaultValue: false,
+    },
+    isFirstTime: {
+      type: DataTypes.BOOLEAN,
     },
   });
 

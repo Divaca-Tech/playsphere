@@ -8,6 +8,10 @@ const Reply = (sequelize, DataTypes) => {
     content: {
       type: DataTypes.TEXT,
     },
+    fileUrl: {
+      type: DataTypes.TEXT,
+      allowNull: true,
+    },
   });
 
   //   Reply.associate = (models) => {
