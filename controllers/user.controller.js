@@ -89,7 +89,7 @@ const confirmOTP = expressAsyncHandler(async (req, res, next) => {
     const startTime = Number(userOtp.otp_exp_time);
     const endTime = new Date().getTime();
 
-    const difference = endTime - startTime;
+    const difference = Number(endTime) - startTime;
 
     const timeInMinute = difference / (1000 * 60);
 
@@ -146,12 +146,17 @@ const requestOtp = expressAsyncHandler(async (req, res, next) => {
       token,
       message,
     });
-    const user = await DB.user.findOne({ email });
+    const user = await DB.user.findOne({
+      where: {
+        email: email,
+      },
+    });
+
+    console.log(user);
     if (!user) {
       throwError("Invalid user", StatusCodes.BAD_REQUEST, true);
     }
 
-    // await sendEmail(html, email, title);
     await DB.user.update(
       {
         otp: token,
@@ -166,6 +171,7 @@ const requestOtp = expressAsyncHandler(async (req, res, next) => {
       }
     );
 
+    await sendEmail(html, email, title);
     res.status(StatusCodes.OK).json({
       message: "OTP resent successfully",
       status: StatusCodes.OK,
@@ -192,6 +198,14 @@ const login = expressAsyncHandler(async (req, res, next) => {
     });
     if (!user) {
       throwError("Invalid user", StatusCodes.BAD_REQUEST, true);
+    }
+
+    if (!user?.is_otp_verified) {
+      throwError(
+        "OTP not verified, please reqest for an OTP and verify it",
+        StatusCodes.BAD_REQUEST,
+        true
+      );
     }
     await comparePassword(password, user.password);
     const token = JWTToken(email, user.id);

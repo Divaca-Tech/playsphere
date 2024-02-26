@@ -143,8 +143,6 @@ const likeOrUnlikeReply = expressAsyncHandler(async (req, res, next) => {
     const authId = req.authId;
     const { replyId } = req.body;
 
-    console.log("============", replyId);
-
     let replyLike;
 
     replyLike = await DB.like.findOne({
@@ -153,7 +151,6 @@ const likeOrUnlikeReply = expressAsyncHandler(async (req, res, next) => {
         userId: authId,
       },
     });
-    console.log("================", replyLike, "================");
 
     if (!replyLike) {
       replyLike = await DB.like.create({
@@ -165,7 +162,6 @@ const likeOrUnlikeReply = expressAsyncHandler(async (req, res, next) => {
     }
 
     if (replyLike.isLiked && replyLike.isFirstTime) {
-      console.log("==========  this is true");
       const reply = await DB.like.update(
         {
           isFirstTime: false,
@@ -208,9 +204,76 @@ const likeOrUnlikeReply = expressAsyncHandler(async (req, res, next) => {
     next(error);
   }
 });
+const likeOrUnlikePost = expressAsyncHandler(async (req, res, next) => {
+  try {
+    const authId = req.authId;
+    const { postId } = req.body;
+
+    console.log(authId);
+
+    let Like;
+
+    Like = await DB.like.findOne({
+      where: {
+        postId: postId,
+        userId: authId,
+      },
+    });
+
+    if (!Like) {
+      Like = await DB.like.create({
+        isLiked: true,
+        isFirstTime: true,
+        postId: postId,
+        userId: authId,
+      });
+    }
+
+    if (Like.isLiked && Like.isFirstTime) {
+      const post = await DB.like.update(
+        {
+          isFirstTime: false,
+        },
+        {
+          where: {
+            id: Like.id,
+          },
+        }
+      );
+    } else if (Like.isLiked && !Like?.isFirstTime) {
+      await DB.like.update(
+        {
+          isLiked: false,
+        },
+        {
+          where: {
+            id: Like.id,
+          },
+        }
+      );
+    } else if (!Like.isLiked && !Like?.isFirstTime) {
+      await DB.like.update(
+        {
+          isLiked: true,
+        },
+        {
+          where: {
+            id: Like.id,
+          },
+        }
+      );
+    }
+    res.status(StatusCodes.OK).json({
+      message: "done",
+    });
+  } catch (error) {
+    next(error);
+  }
+});
 
 module.exports = {
   LikeComment,
   UnlikeComment,
   likeOrUnlikeReply,
+  likeOrUnlikePost,
 };

@@ -70,6 +70,8 @@ const deleteComment = expressAsyncHandler(async (req, res, next) => {
   try {
     const { authId } = req;
 
+    console.log("========= ", authId);
+
     const { commentId } = req.params;
 
     const exactComment = await await DB.comment.findOne({
@@ -79,24 +81,26 @@ const deleteComment = expressAsyncHandler(async (req, res, next) => {
       include: DB.post,
     });
 
+    console.log(exactComment.userId === authId);
+
     if (
-      exactComment?.userId !== authId ||
-      exactComment?.post?.userId !== authId
+      exactComment?.userId === authId ||
+      exactComment?.post?.userId === authId
     ) {
-      throwError("Unauthorized access", StatusCodes.UNAUTHORIZED, true);
-    }
-
-    const comment = await DB.comment.destroy({
-      where: {
-        id: commentId,
-      },
-    });
-
-    if (comment) {
-      res.status(StatusCodes.OK).json({
-        message: "Comment deleted successfully",
-        status: StatusCodes.OK,
+      const comment = await DB.comment.destroy({
+        where: {
+          id: commentId,
+        },
       });
+
+      if (comment) {
+        res.status(StatusCodes.OK).json({
+          message: "Comment deleted successfully",
+          status: StatusCodes.OK,
+        });
+      }
+    } else {
+      throwError("Unauthorized access", StatusCodes.UNAUTHORIZED, true);
     }
   } catch (error) {
     next(error);
@@ -106,7 +110,7 @@ const updateCommentText = expressAsyncHandler(async (req, res, next) => {
   try {
     const { authId } = req;
     const { commentId, content } = req.body;
-    const exactComment = await await DB.comment.findOne({
+    const exactComment = await DB.comment.findOne({
       where: {
         id: commentId,
       },

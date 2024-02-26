@@ -91,16 +91,14 @@ userRouters.post(
   ],
   googleAuth
 );
-userRouters.post(
-  "/reply-comment",
-  auth,
-  formidableMiddleware(),
-  postCommentReply
-);
-userRouters.post("/comment", auth, formidableMiddleware(), postComment);
-userRouters.delete("/delete-comment/:commentId", auth, deleteComment);
-userRouters.patch("/update-comment", auth, updateCommentText);
-
-userRouters.post("/like-reply", auth, likeOrUnlikeReply);
+// userRouters.post(
+//   "/reply-comment",
+//   auth,
+//   formidableMiddleware(),
+//   postCommentReply
+// );
+// userRouters.post("/comment", auth, formidableMiddleware(), postComment);
+// userRouters.delete("/delete-comment/:commentId", auth, deleteComment);
+// userRouters.patch("/update-comment", auth, updateCommentText);
 
 module.exports = userRouters;

@@ -66,9 +66,10 @@ const sendEmail = async function (content, to, subject) {
 
   try {
     const transport = createTransport({
-      host: config.HOST, // Example: 'smtp.yourprovider.com'
-      port: 465,
-      secure: true,
+      service: config.HOST, // Example: 'smtp.yourprovider.com'
+      // port: 465,
+      // secure: true,
+      host: "smtp.gmail.com",
       auth: {
         user: config.EMAIL,
         pass: config.MAIL_PASSWORD,
