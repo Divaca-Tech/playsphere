@@ -7,6 +7,9 @@ const PostAttachmentModel = require("./PostAttachment");
 const CommentModel = require("./Comment");
 const LikeModel = require("./Like");
 const ReplyModel = require("./Reply");
+const RealShareModel = require("./ReelShare");
+const ReelModel = require("./Reel");
+const StoryModel = require("./Story");
 const { setUpAssociations } = require("./associations");
 // const { setUpAssociations } = require("./associations");
 
@@ -35,6 +38,9 @@ DB.postAttachment = PostAttachmentModel(sequelize, DataTypes);
 DB.comment = CommentModel(sequelize, DataTypes);
 DB.like = LikeModel(sequelize, DataTypes);
 DB.reply = ReplyModel(sequelize, DataTypes);
+DB.reel = ReelModel(sequelize, DataTypes);
+DB.reelShare = RealShareModel(sequelize, DataTypes);
+DB.story = StoryModel(sequelize, DataTypes);
 
 DB.user.hasMany(DB.post, {
   foreignKey: "userId",
@@ -102,7 +108,37 @@ DB.user.hasMany(DB.reply, {
 DB.reply.belongsTo(DB.user, {
   foreignKey: { name: "userId", allowNull: true },
 });
+DB.user.hasMany(DB.reel, {
+  foreignKey: { name: "userId", allowNull: true },
+}),
+  DB.reel.hasMany(DB.comment, {
+    foreignKey: { name: "commentId", allowNull: true },
+  }),
+  DB.comment.belongsTo(DB.reel, {
+    foreignKey: { name: "commentId", allowNull: true },
+  }),
+  DB.reel.belongsToMany(DB.user, {
+    through: "reelShare",
+    foreignKey: "realUserId",
+  });
 
+DB.user.hasMany(DB.story, {
+  foreignKey: "userId",
+  allowNull: true,
+});
+DB.story.hasMany(DB.comment, {
+  foreignKey: "commentId",
+  allowNull: true,
+});
+DB.comment.belongsTo(DB.story, {
+  foreignKey: "commentId",
+  allowNull: true,
+});
+
+DB.story.belongsTo(DB.user, {
+  foreignKey: "userId",
+  allowNull: true,
+});
 sequelize
   .sync({ force: false })
   .then(() => {

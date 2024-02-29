@@ -70,7 +70,6 @@ const deleteComment = expressAsyncHandler(async (req, res, next) => {
   try {
     const { authId } = req;
 
-    console.log("========= ", authId);
 
     const { commentId } = req.params;
 

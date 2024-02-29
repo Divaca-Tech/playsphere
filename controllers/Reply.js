@@ -100,7 +100,7 @@ const updateReply = expressAsyncHandler(async (req, res, next) => {
     const { authId } = req;
     const { replyId, content } = req.body;
 
-    console.log("========= ", replyId);
+ 
 
     const reply = await DB.reply.findOne({
       where: {
