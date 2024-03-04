@@ -435,7 +435,7 @@ const swaggerDefinitions = {
       },
     },
   },
-  "/user/comment": {
+  "/comment/post": {
     post: {
       tags: ["Post"],
       summary: "Endpoint for adding comments to a post",
@@ -469,7 +469,7 @@ const swaggerDefinitions = {
       },
     },
   },
-  "/user/delete-comment/:commentId": {
+  "/comment/delete/:commentId": {
     delete: {
       tags: ["Delete"],
       summary: "Endpoint fordeleting comment",
@@ -499,7 +499,7 @@ const swaggerDefinitions = {
       },
     },
   },
-  "/user/update-comment": {
+  "/comment/update": {
     patch: {
       tags: ["patch"],
       summary: "Endpoint for updating comment",
@@ -531,7 +531,7 @@ const swaggerDefinitions = {
     },
   },
 
-  "/user/reply-comment": {
+  "/reply/reply-comment": {
     post: {
       tags: ["Post"],
       summary: "Endpoint for replying a comment",
@@ -567,6 +567,32 @@ const swaggerDefinitions = {
     },
   },
 
+  "/delete-comment-reply/:replyId": {
+    post: {
+      tags: ["delete"],
+      summary: "Endpoint for deleting a comment reply",
+      description: `| This endpoint allows  user to delete a reply to a comment |`,
+      requestBody: {
+        description: "Post object",
+        required: true,
+        content: {
+          "application/json": {
+            schema: {
+              headers: {
+                Authorization: "Bearer " + "token",
+              },
+            },
+          },
+        },
+      },
+      responses: {
+        200: {
+          description: " reply deleted successfully",
+        },
+      },
+    },
+  },
+
   "/user/like-reply": {
     post: {
       tags: ["post"],
@@ -593,6 +619,158 @@ const swaggerDefinitions = {
       responses: {
         200: {
           description: "Comment deleted successfully",
+        },
+      },
+    },
+  },
+  "/reel/create-reel": {
+    post: {
+      tags: ["Post"],
+      summary: "Endpoint for adding  reels",
+      description: `|
+          This endpoint allows you to  post a reel   and also attach any file type to the reel `,
+      requestBody: {
+        description: "Post object",
+        required: true,
+        content: {
+          "application/json": {
+            schema: {
+              type: "object",
+              properties: {
+                content: { type: "string" },
+                file: { type: "image/video/jpeg" },
+              },
+              headers: {
+                Authorization: "Bearer " + "token",
+              },
+            },
+          },
+        },
+      },
+      responses: {
+        200: {
+          description: "reel successfully",
+        },
+      },
+    },
+  },
+  "/reel/share-reel": {
+    post: {
+      tags: ["Post"],
+      summary: "Endpoint for sharing reels to other users",
+      description: `|
+          This endpoint allows you  to share reel  to other users just like instagram`,
+      requestBody: {
+        description: "Post object",
+        required: true,
+        content: {
+          "application/json": {
+            schema: {
+              type: "object",
+              properties: {
+                userId: { type: "string" },
+                reelId: { type: "string" },
+              },
+              headers: {
+                Authorization: "Bearer " + "token",
+              },
+            },
+          },
+        },
+      },
+      responses: {
+        200: {
+          description: "reel shared successfully",
+        },
+      },
+    },
+  },
+  "/like/like-story": {
+    post: {
+      tags: ["Post"],
+      summary: "Endpoint for liking and unliking a story",
+      description: `|
+          This endpoint allows you   to like and unlike a story`,
+      requestBody: {
+        description: "Post object",
+        required: true,
+        content: {
+          "application/json": {
+            schema: {
+              type: "object",
+              properties: {
+                storyId: { type: "string" },
+              },
+              headers: {
+                Authorization: "Bearer " + "token",
+              },
+            },
+          },
+        },
+      },
+      responses: {
+        200: {
+          description: "done",
+        },
+      },
+    },
+  },
+  "/like/like-reply": {
+    post: {
+      tags: ["Post"],
+      summary: "Endpoint for liking and unliking a  reply to a comment",
+      description: `|
+          This endpoint allows you   to like and unlike  a reply`,
+      requestBody: {
+        description: "Post object",
+        required: true,
+        content: {
+          "application/json": {
+            schema: {
+              type: "object",
+              properties: {
+                replyId: { type: "string" },
+              },
+              headers: {
+                Authorization: "Bearer " + "token",
+              },
+            },
+          },
+        },
+      },
+      responses: {
+        200: {
+          description: "done",
+        },
+      },
+    },
+  },
+  "/like/like-post": {
+    post: {
+      tags: ["Post"],
+      summary: "Endpoint for liking and unliking a  post",
+      description: `|
+          This endpoint allows you   to like and unlike  a post`,
+      requestBody: {
+        description: "Post object",
+        required: true,
+        content: {
+          "application/json": {
+            schema: {
+              type: "object",
+              properties: {
+                postId: { type: "string" },
+              },
+              headers: {
+                Authorization: "Bearer " + "token",
+              },
+            },
+          },
+        },
+      },
+      responses: {
+        200: {
+          description: "done",
         },
       },
     },

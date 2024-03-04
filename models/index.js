@@ -108,23 +108,35 @@ DB.user.hasMany(DB.reply, {
 DB.reply.belongsTo(DB.user, {
   foreignKey: { name: "userId", allowNull: true },
 });
-DB.user.hasMany(DB.reel, {
+// DB.reel.hasMany(DB.reelShare, {
+//   foreignKey: { name: "reelId", allowNull: true },
+// });
+DB.reelShare.belongsTo(DB.reel, {
+  foreignKey: { name: "reelId", allowNull: true },
+});
+DB.reelShare.belongsTo(DB.user, {
   foreignKey: { name: "userId", allowNull: true },
+});
+
+DB.reelShare.belongsTo(DB.user, {
+  foreignKey: { name: "sharedById", as: "sharedBy", allowNull: true },
+});
+
+DB.reel.hasMany(DB.comment, {
+  foreignKey: { name: "commentId", allowNull: true },
 }),
-  DB.reel.hasMany(DB.comment, {
-    foreignKey: { name: "commentId", allowNull: true },
-  }),
   DB.comment.belongsTo(DB.reel, {
     foreignKey: { name: "commentId", allowNull: true },
   }),
-  DB.reel.belongsToMany(DB.user, {
-    through: "reelShare",
-    foreignKey: "realUserId",
+  DB.user.hasMany(DB.story, {
+    foreignKey: "userId",
+    allowNull: true,
   });
-
-DB.user.hasMany(DB.story, {
-  foreignKey: "userId",
-  allowNull: true,
+DB.like.belongsTo(DB.story, {
+  foreignKey: { name: "storyId", allowNull: true },
+});
+DB.like.belongsTo(DB.reel, {
+  foreignKey: { name: "reelId", allowNull: true },
 });
 DB.story.hasMany(DB.comment, {
   foreignKey: "commentId",

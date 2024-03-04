@@ -9,8 +9,13 @@ const formidableMiddleware = require("express-formidable");
 
 const replyRouter = express.Router();
 
-replyRouter.post("/post", auth, formidableMiddleware(), postCommentReply);
-replyRouter.delete("/delete/:replyId", auth, deleteRelply);
+replyRouter.post(
+  "/reply-comment",
+  auth,
+  formidableMiddleware(),
+  postCommentReply
+);
+replyRouter.delete("/delete-comment-reply/:replyId", auth, deleteRelply);
 replyRouter.post("/update", auth, updateReply);
 
 module.exports = replyRouter;

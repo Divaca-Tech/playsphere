@@ -270,10 +270,76 @@ const likeOrUnlikePost = expressAsyncHandler(async (req, res, next) => {
     next(error);
   }
 });
+const likeOrUnlikeStory = expressAsyncHandler(async (req, res, next) => {
+  try {
+    const authId = req.authId;
+    const { storyId } = req.body;
+
+    let Like;
+
+    Like = await DB.like.findOne({
+      where: {
+        storyId: storyId,
+        userId: authId,
+      },
+    });
+
+    if (!Like) {
+      Like = await DB.like.create({
+        isLiked: true,
+        isFirstTime: true,
+        storyId: storyId,
+
+        userId: authId,
+      });
+    }
+
+    if (Like.isLiked && Like.isFirstTime) {
+      const story = await DB.like.update(
+        {
+          isFirstTime: false,
+        },
+        {
+          where: {
+            id: Like.id,
+          },
+        }
+      );
+    } else if (Like.isLiked && !Like?.isFirstTime) {
+      await DB.like.update(
+        {
+          isLiked: false,
+        },
+        {
+          where: {
+            id: Like.id,
+          },
+        }
+      );
+    } else if (!Like.isLiked && !Like?.isFirstTime) {
+      await DB.like.update(
+        {
+          isLiked: true,
+        },
+        {
+          where: {
+            id: Like.id,
+          },
+        }
+      );
+    }
+    res.status(StatusCodes.OK).json({
+      message: "done",
+    });
+  } catch (error) {
+    next(error);
+  }
+});
 
 module.exports = {
   LikeComment,
   UnlikeComment,
   likeOrUnlikeReply,
   likeOrUnlikePost,
+  likeOrUnlikeStory,
 };
