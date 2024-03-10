@@ -48,7 +48,7 @@ const comparePassword = async (password, hashedPassword) => {
   try {
     const isMatch = await bycrypt.compare(password, hashedPassword);
     if (!isMatch) {
-      throwError("Invalid password", StatusCodes.BAD_REQUEST);
+      throwError("Invalid email and password", StatusCodes.BAD_REQUEST);
     }
   } catch (error) {
     console.error(error);

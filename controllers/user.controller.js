@@ -197,7 +197,7 @@ const login = expressAsyncHandler(async (req, res, next) => {
       },
     });
     if (!user) {
-      throwError("Invalid user", StatusCodes.BAD_REQUEST, true);
+      throwError("Invalid email and password", StatusCodes.BAD_REQUEST, true);
     }
 
     if (!user?.is_otp_verified) {
