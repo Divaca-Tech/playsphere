@@ -86,6 +86,47 @@ export const authOptions: NextAuthOptions = {
         return null;
       },
     }),
+
+    Credentials({
+      id: "confirm-otp",
+      name: "Confirm OTP",
+      credentials: {},
+
+      async authorize(credentials) {
+        const parsedCredentials = z
+          .object({
+            email: z.string().email(),
+            OTP: z.string(),
+          })
+          .safeParse(credentials);
+
+        if (parsedCredentials.success) {
+          const { email, OTP } = parsedCredentials.data;
+          const config = {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          };
+
+          const body = JSON.stringify({ email, OTP });
+
+          try {
+            const res = await axios.post(
+              "https://playshere-api-v1.onrender.com/api/v1/user/confirm-otp",
+              body,
+              config
+            );
+            const user = await res.data;
+            return user;
+          } catch (err: any) {
+            const errors = err.response.data;
+            console.log(errors);
+            throw new Error(errors.message);
+          }
+        }
+        return null;
+      },
+    }),
   ],
 
   session: { strategy: "jwt" },
@@ -94,7 +135,7 @@ export const authOptions: NextAuthOptions = {
 
   pages: {
     signIn: "/",
-    // verifyRequest: "/register",
+    // verifyRequest: "/confirmOTP",
     // error: "/error",
   },
 

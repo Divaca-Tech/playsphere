@@ -19,6 +19,7 @@ export default function RegisterForm() {
 
   const [errorText, setErrorText] = useState("");
   const [error, setError] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const { name, email, phoneNumber, password, password2 } = formData;
 
@@ -35,6 +36,7 @@ export default function RegisterForm() {
       return;
     } else {
       try {
+        setLoading(true);
         const res = await signIn("register-credentials", {
           name,
           email,
@@ -44,16 +46,16 @@ export default function RegisterForm() {
         });
 
         if (res?.error) {
-          console.log(res);
           setError(true);
           return setErrorText(res.error);
         }
 
-        router.replace("/dashboard");
-
+        router.replace("/confirmOTP");
         console.log(res);
+        setLoading(false);
       } catch (errorText) {
         console.log(errorText);
+        setLoading(false);
       }
     }
   };
@@ -130,7 +132,7 @@ export default function RegisterForm() {
               handleChange={handleChange}
             />
             <div className='flex items-center justify-center'>
-              <Button>SIGN UP</Button>
+              {loading ? "Loading" : <Button> SIGN UP</Button>}
             </div>
             {errorText && (
               <div className='bg-red-500 text-white text-sm rounded-md mt-2 w-fit p-3'>

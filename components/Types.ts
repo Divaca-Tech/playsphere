@@ -7,6 +7,7 @@ export interface FormTypes {
   value: string;
   placeholder: string;
   error: boolean;
+  hidden?: boolean;
   errorText: string | boolean;
   handleChange: (e: ChangeEvent<HTMLInputElement>) => void;
 }

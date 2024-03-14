@@ -19,17 +19,18 @@ function TextField({
   placeholder,
   error,
   errorText,
+  hidden = false,
   handleChange,
 }: FormTypes) {
   return (
     <ThemeProvider theme={theme}>
-      <FormControl sx={{ mx: 3 }} error={error}>
+      <FormControl sx={{ mx: 3 }} error={error} hidden={hidden}>
         <InputLabel
           sx={{
             color: "#666666",
-            background: "#130320",
             fontSize: 15,
-            px: 1.2,
+            background: "#130320",
+            px: 1,
             py: 0.2,
             ml: -0.5,
             borderRadius: 50,
@@ -38,13 +39,14 @@ function TextField({
           {placeholder}
         </InputLabel>
         <OutlinedInput
-          sx={[
-            {
-              color: "white",
-              borderRadius: "15px",
-              outline: "1px solid #DB546E",
+          sx={{
+            color: "white",
+            borderRadius: "15px",
+            border: "1px solid #DB546E",
+            "&.Mui-focused": {
+              border: "none",
             },
-          ]}
+          }}
           fullWidth
           id={id}
           type={type}

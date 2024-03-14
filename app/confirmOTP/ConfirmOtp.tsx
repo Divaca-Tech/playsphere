@@ -2,8 +2,8 @@
 
 import { signIn, useSession } from "next-auth/react";
 import Link from "next/link";
-import { redirect, useRouter } from "next/navigation";
-import { ChangeEvent, FormEvent, useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { ChangeEvent, FormEvent, useState } from "react";
 import TextField from "@/components/TextField";
 import Button from "@/components/Button";
 import Image from "next/image";
@@ -11,17 +11,14 @@ import Image from "next/image";
 export default function LoginForm() {
   const [formData, setFormData] = useState({
     email: "",
-    password: "",
+    OTP: "",
   });
 
-  const [errorText, setErrorText] = useState("");
-
   const [error, setError] = useState(false);
-  const [loading, setLoading] = useState(false);
 
   const router = useRouter();
 
-  const { email, password } = formData;
+  const { email, OTP } = formData;
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -30,28 +27,27 @@ export default function LoginForm() {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      setLoading(true);
-      const res = await signIn("login-credentials", {
+      const res = await signIn("confirm-otp", {
         email,
-        password,
+        OTP,
         redirect: false,
       });
 
       if (res?.error) {
+        console.log(res);
         setError(true);
-        setLoading(false);
-        return setErrorText(res.error);
+      } else {
+        router.replace("/dashboard");
       }
-
-      router.replace("/dashboard");
-      setLoading(false);
 
       console.log(res);
     } catch (error) {
-      setLoading(false);
       console.log(error);
     }
   };
+
+  const { data: session } = useSession();
+  console.log(session);
 
   return (
     <div className='flex items-center justify-center space-x-36 mt-20'>
@@ -59,8 +55,8 @@ export default function LoginForm() {
       <div className='w-2/5'>
         <div className='shadow-md shadow-slate-200 p-5 rounded-lg py-10'>
           <div className='m-5'>
-            <h1 className='text-xl font-bold mb-5'>SIGN IN</h1>
-            <p className='mb-7'>Welcome Back!</p>
+            <h1 className='text-xl font-bold mb-5'>OTP Confirmation</h1>
+            <p className='mb-7'>Please confirm the OTP sent to your email.</p>
           </div>
           <form onSubmit={handleSubmit} className='flex flex-col gap-3'>
             <div className='w-fit text-blue-200'></div>
@@ -74,29 +70,22 @@ export default function LoginForm() {
                 error && email.length === 0 && "Please enter your email"
               }
               error={error}
+              //   hidden={true}
               handleChange={handleChange}
             />
             <TextField
-              id='password'
-              type='password'
-              name='password'
-              value={password}
-              placeholder='Password'
-              errorText={
-                error && password.length === 0 && "Please enter your password"
-              }
+              id='OTP'
+              type='text'
+              name='OTP'
+              value={OTP}
+              placeholder='OTP Code'
+              errorText={error && OTP.length === 0 && "Please enter your OTP"}
               error={error}
               handleChange={handleChange}
             />
             <div className='flex items-center justify-center'>
-              {loading ? "Loading" : <Button>SIGN IN</Button>}
+              <Button> Confirm OTP </Button>
             </div>
-
-            {/* {error && (
-              <div className='bg-red-500 text-white text-sm rounded-md mt-2 w-fit p-5'>
-                {errorText}
-              </div>
-            )} */}
 
             <Link href='/register' className='text-sm mt-3 text-center'>
               Don't have an account? <span className='underline'>Register</span>
