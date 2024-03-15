@@ -10,6 +10,7 @@ export default function UserInfo() {
     <div className='grid place-items-center h-screen'>
       <div className='shadow-lg p-8 bg-sinc-300/10 flex-col gap-2 my-6'>
         <div className=''>
+          
           Name: <span className='font-bold'>{session?.user?.token}</span>
         </div>
         <div className=''>

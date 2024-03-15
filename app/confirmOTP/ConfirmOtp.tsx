@@ -52,6 +52,7 @@ export default function LoginForm() {
   return (
     <div className='flex items-center justify-center space-x-36 mt-20'>
       <Image src='/logo.png' width={200} height={10} alt='playsphere logo' />
+
       <div className='w-2/5'>
         <div className='shadow-md shadow-slate-200 p-5 rounded-lg py-10'>
           <div className='m-5'>
@@ -92,6 +93,7 @@ export default function LoginForm() {
             </Link>
           </form>
         </div>
+        L
       </div>
     </div>
   );

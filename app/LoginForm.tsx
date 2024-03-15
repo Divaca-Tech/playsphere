@@ -7,6 +7,7 @@ import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import TextField from "@/components/TextField";
 import Button from "@/components/Button";
 import Image from "next/image";
+import Spinner from "@/components/Spinner";
 
 export default function LoginForm() {
   const [formData, setFormData] = useState({
@@ -40,6 +41,7 @@ export default function LoginForm() {
       if (res?.error) {
         setError(true);
         setLoading(false);
+        console.log(res);
         return setErrorText(res.error);
       }
 
@@ -89,7 +91,7 @@ export default function LoginForm() {
               handleChange={handleChange}
             />
             <div className='flex items-center justify-center'>
-              {loading ? "Loading" : <Button>SIGN IN</Button>}
+              <Button>{loading ? <Spinner /> : "SIGN IN"}</Button>
             </div>
 
             {/* {error && (

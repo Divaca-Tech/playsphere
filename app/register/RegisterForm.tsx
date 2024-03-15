@@ -7,6 +7,7 @@ import { signIn } from "next-auth/react";
 import TextField from "@/components/TextField";
 import Button from "@/components/Button";
 import Image from "next/image";
+import Spinner from "@/components/Spinner";
 
 export default function RegisterForm() {
   const [formData, setFormData] = useState({
@@ -47,15 +48,16 @@ export default function RegisterForm() {
 
         if (res?.error) {
           setError(true);
+          setLoading(false);
           return setErrorText(res.error);
         }
 
         router.replace("/confirmOTP");
+        setLoading(false);
         console.log(res);
+      } catch (error) {
         setLoading(false);
-      } catch (errorText) {
-        console.log(errorText);
-        setLoading(false);
+        console.log(error);
       }
     }
   };
@@ -132,7 +134,7 @@ export default function RegisterForm() {
               handleChange={handleChange}
             />
             <div className='flex items-center justify-center'>
-              {loading ? "Loading" : <Button> SIGN UP</Button>}
+              <Button>{loading ? <Spinner /> : "SIGN UP"}</Button>
             </div>
             {errorText && (
               <div className='bg-red-500 text-white text-sm rounded-md mt-2 w-fit p-3'>
