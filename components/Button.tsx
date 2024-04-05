@@ -11,7 +11,7 @@ function Button({
       <button
         aria-disabled={pending}
         type='submit'
-        className='bg-[#7E008B] rounded-lg text-slate-200 font-bold cursor-pointer px-6 py-2'>
+        className='bg-[#D900F0] w-full rounded-lg text-slate-200 font-bold cursor-pointer px-6 py-3'>
         {children}
       </button>
     </>
