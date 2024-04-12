@@ -18,7 +18,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang='en'>
-      <body className={`${roboto.className} container`}>
+      <body className={`${poppins.className} container`}>
         <AuthProvider>{children}</AuthProvider>
       </body>
     </html>
