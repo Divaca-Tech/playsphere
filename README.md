@@ -1,4 +1,5 @@
-# Contributing to PLAYSHERE
+# PLAYSPHERE PROJECT
+## Contributing to PLAYSHERE
 
 Welcome to Playshere! Before you get started, please take a moment to review this guideline to ensure a smooth onboarding process.
 

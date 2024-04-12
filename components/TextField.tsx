@@ -24,12 +24,12 @@ function TextField({
 }: FormTypes) {
   return (
     <ThemeProvider theme={theme}>
-      <FormControl sx={{ mx: 3 }} error={error} hidden={hidden}>
+      <FormControl error={error} hidden={hidden}>
         <InputLabel
           sx={{
             color: "#666666",
             fontSize: 15,
-            background: "#130320",
+            background: "#202023",
             px: 1,
             py: 0.2,
             ml: -0.5,
@@ -42,7 +42,7 @@ function TextField({
           sx={{
             color: "white",
             borderRadius: "15px",
-            border: "1px solid #DB546E",
+            background: "#202023",
             "&.Mui-focused": {
               border: "none",
             },
