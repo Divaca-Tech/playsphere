@@ -11,6 +11,10 @@ body {
   --line: #3A3A3A;
 
 }
+.container {
+  max-width: 1440px;
+  margin-inline: auto;
+}
 /* input {
   @apply w-[400px] border border-gray-200 py-2 px-6 bg-zinc-100/40;
 } */
